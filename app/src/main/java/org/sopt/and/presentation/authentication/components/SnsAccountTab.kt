@@ -126,7 +126,7 @@ fun SnsAccountTab(
 }
 
 @Composable
-fun SnsButton(
+private fun SnsButton(
     modifier: Modifier = Modifier,
     @DrawableRes logo: Int,
     backgroundColor: Color,
