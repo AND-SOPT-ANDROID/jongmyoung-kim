@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ fun SignUpTopBar(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "회원가입",
+            text = stringResource(R.string.sign_up),
             color = Color.White
         )
         Icon(
@@ -115,7 +116,7 @@ fun WelcomeTopBar(
                 .noRippleClickable {
                     onNavigateToLogin()
                 },
-            text = "로그인",
+            text = stringResource(R.string.sign_in),
             color = Color.White
         )
     }

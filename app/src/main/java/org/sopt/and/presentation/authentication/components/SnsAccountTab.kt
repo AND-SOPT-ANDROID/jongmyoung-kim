@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +39,7 @@ import org.sopt.and.presentation.theme.TWorld
 @Composable
 fun SnsAccountTab(
     modifier: Modifier = Modifier,
+    title: String,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
     Column(
@@ -56,7 +58,7 @@ fun SnsAccountTab(
             )
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                text = "또는 다른 서비스 계정으로 가입",
+                text = title,
                 color = LightGray,
                 style = textStyle
             )
@@ -112,12 +114,12 @@ fun SnsAccountTab(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 4.dp),
-                text = "·",
+                text = stringResource(R.string.sns_dot),
                 color = DarkGray,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
-                text = "SNS계정으로 간편하게 가입하여 서비스를 이용하실 수 있습니다.\n기존 POOQ 계정 혹은 Wavve 계정과는 연동되지 않으니 이용이 참고하세요.",
+                text = stringResource(R.string.sns_notification),
                 color = DarkGray,
                 style = MaterialTheme.typography.labelSmall,
             )
@@ -155,6 +157,8 @@ private fun SnsButton(
 @Composable
 private fun LogoButtonPreview() {
     ANDANDROIDTheme {
-        SnsAccountTab()
+        SnsAccountTab(
+            title = ""
+        )
     }
 }
