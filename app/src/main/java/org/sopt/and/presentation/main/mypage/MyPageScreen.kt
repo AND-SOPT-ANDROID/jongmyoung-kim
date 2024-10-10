@@ -37,11 +37,12 @@ import org.sopt.and.presentation.theme.WavveMain
 
 @Composable
 fun MyPageScreen(
+    modifier: Modifier = Modifier,
     userEmail: String = ""
 ) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(ExtraDarkGray)
             .padding(top = 20.dp)
