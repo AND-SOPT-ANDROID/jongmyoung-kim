@@ -74,7 +74,6 @@ class SignInActivity : ComponentActivity() {
         snackbarHostState: SnackbarHostState,
         coroutineScope: CoroutineScope
     ) {
-        Log.e("login", correctEmail+correctPassword)
         if (emailInput == correctEmail && passwordInput == correctPassword && emailInput.isNotEmpty() && passwordInput.isNotEmpty()) {
             val sharedPreferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
             with(sharedPreferences.edit()) {

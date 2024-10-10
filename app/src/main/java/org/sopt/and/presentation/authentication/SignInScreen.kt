@@ -34,6 +34,7 @@ import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.LightGray
 import org.sopt.and.presentation.theme.WavveMain
+import org.sopt.and.presentation.util.Constants
 
 @Composable
 fun SignInScreen(
@@ -57,11 +58,12 @@ fun SignInScreen(
         CustomTextField(
             modifier = Modifier
                 .padding(top = 48.dp)
-                .height(56.dp)
-            ,
+                .height(56.dp),
             value = emailInput,
             hint = stringResource(R.string.sign_in_email_hint),
-            onValueChange = { emailInput = it },
+            onValueChange = {
+                if (it.length <= Constants.MAX_EMAIL) emailInput = it
+            },
             shape = RoundedCornerShape(5.dp)
         )
 //        AlertText(
@@ -74,7 +76,9 @@ fun SignInScreen(
                 .height(56.dp),
             value = passwordInput,
             hint = stringResource(R.string.sign_in_password_hint),
-            onValueChange = { passwordInput = it },
+            onValueChange = {
+                if (it.length <= Constants.MAX_PASSWORD) passwordInput = it
+            },
             isPassword = true,
             shape = RoundedCornerShape(5.dp),
             visualTransformation = PasswordVisualTransformation()
@@ -147,6 +151,6 @@ fun SignInScreen(
 @Composable
 private fun SignInScreenPreview() {
     ANDANDROIDTheme {
-        SignInScreen(Modifier, {}, {_, _ ->})
+        SignInScreen(Modifier, {}, { _, _ -> })
     }
 }
