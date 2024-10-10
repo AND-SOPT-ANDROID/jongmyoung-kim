@@ -20,20 +20,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.and.R
 import org.sopt.and.presentation.authentication.components.CustomTextField
 import org.sopt.and.presentation.authentication.components.SnsAccountTab
 import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ErrorText
 import org.sopt.and.presentation.theme.LightGray
 import org.sopt.and.presentation.theme.WavveMain
+import org.sopt.and.presentation.util.Constants
 import org.sopt.and.presentation.util.coloredText
 
 @Composable
@@ -56,12 +55,9 @@ fun SignUpScreen(
     val scrollState = rememberScrollState()
     var emailInput by remember { mutableStateOf("") }
     var passwordInput by remember { mutableStateOf("") }
-    var isEmailValid by remember { mutableStateOf(Pair(true, "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해 주세요.")) }
-    var isPasswordValid by remember { mutableStateOf(true) }
-    val emailFocusRequester = remember { FocusRequester() }
-    val passwordFocusRequester = remember { FocusRequester() }
-    val buttonEnabled =
-        isEmailValid.first && isPasswordValid && emailInput.isNotEmpty() && passwordInput.isNotEmpty()
+//    var isEmailValid by remember { mutableStateOf(false) }
+//    var isPasswordValid by remember { mutableStateOf(false) }
+//    val isButtonEnabled = emailInput.isNotEmpty() && passwordInput.isNotEmpty() && isEmailValid && isPasswordValid
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -81,45 +77,39 @@ fun SignUpScreen(
             CustomTextField(
                 modifier = Modifier
                     .padding(top = 4.dp)
-                    .focusRequester(emailFocusRequester)
-                    .onFocusChanged { focusState ->
-                        if (!focusState.isFocused && emailInput.isNotEmpty()) {
-                            isEmailValid = isValidEmail(emailInput)
-                        }
-                    },
+                        ,
                 value = emailInput,
-                hint = "wavve@example.com",
+                hint = stringResource(R.string.sign_up_email_hint),
                 onValueChange = {
-                    emailInput = it
+                    if (it.length <= Constants.MAX_EMAIL) emailInput = it
+//                    isEmailValid = isValidEmail(emailInput)
                 }
             )
             AlertText(
                 modifier = Modifier.padding(vertical = 10.dp),
-                value = isEmailValid.second,
-                textColor = if (isEmailValid.first) Color.White else ErrorText
+                value = stringResource(R.string.sign_up_email_noti),
+                textColor = LightGray
             )
             CustomTextField(
-                modifier = Modifier
-                    .focusRequester(passwordFocusRequester)
-                    .onFocusChanged { focusState ->
-                        if (!focusState.isFocused && passwordInput.isNotEmpty()) {
-                            isPasswordValid = isValidPassword(passwordInput)
-                        }
-                    },
+                modifier = Modifier,
                 value = passwordInput,
-                hint = "Wavve 비밀번호 설정",
+                hint = stringResource(R.string.sign_up_password_hint),
                 onValueChange = {
-                    passwordInput = it
+                    if (it.length <= Constants.MAX_PASSWORD) passwordInput = it
+//                    isPasswordValid = isValidPassword(passwordInput)
                 },
                 isPassword = true,
                 visualTransformation = PasswordVisualTransformation()
             )
             AlertText(
                 modifier = Modifier.padding(vertical = 10.dp),
-                value = "비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해 주세요.",
-                textColor = if (isPasswordValid) Color.White else ErrorText
+                value = stringResource(R.string.sign_up_password_noti),
+                textColor = LightGray
             )
-            SnsAccountTab(modifier = Modifier.padding(bottom = 96.dp))
+            SnsAccountTab(
+                modifier = Modifier.padding(bottom = 96.dp),
+                title = stringResource(R.string.sns_sign_up)
+            )
         }
         Box(
             modifier = Modifier
@@ -127,10 +117,11 @@ fun SignUpScreen(
                 .height(48.dp)
                 .fillMaxWidth()
                 .background(
-                    if (buttonEnabled) WavveMain else LightGray
+//                    if (isButtonEnabled) WavveMain else LightGray
+                    LightGray
                 )
                 .clickable(
-                    enabled = buttonEnabled,
+                    enabled = true,
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
@@ -139,7 +130,7 @@ fun SignUpScreen(
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = "Wavve 회원가입",
+                text = stringResource(R.string.wavve_sign_up),
                 color = Color.White
             )
         }
