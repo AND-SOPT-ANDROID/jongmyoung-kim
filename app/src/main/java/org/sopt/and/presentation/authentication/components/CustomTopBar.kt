@@ -58,6 +58,7 @@ fun SignInTopBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 8.dp)
             .height(56.dp),
         contentAlignment = Alignment.Center
     ) {
