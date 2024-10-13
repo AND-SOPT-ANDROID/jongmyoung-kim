@@ -46,7 +46,7 @@ fun SignUpTopBar(
                     // TODO: 회원가입 취소 Dialog 표시
                 },
             imageVector = ImageVector.vectorResource(R.drawable.ic_close),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.ic_close),
             tint = Color.White
         )
     }
@@ -72,14 +72,14 @@ fun SignInTopBar(
                     onBackClick()
                 },
             imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.ic_back),
             tint = Color.White
         )
         Icon(
             modifier = Modifier
                 .align(Alignment.Center),
             imageVector = ImageVector.vectorResource(R.drawable.wavve_logo),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.logo_wavve),
             tint = Color.White
         )
     }
@@ -109,7 +109,7 @@ fun WelcomeTopBar(
             modifier = Modifier
                 .align(Alignment.CenterStart),
             imageVector = ImageVector.vectorResource(R.drawable.wavve_logo),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.logo_wavve),
             tint = Color.White
         )
         Text(

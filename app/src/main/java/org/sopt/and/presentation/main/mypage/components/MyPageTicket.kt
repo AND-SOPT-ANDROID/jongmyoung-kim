@@ -66,7 +66,7 @@ fun MyPageTicket(
 private fun MyPageTicketPreview() {
     ANDANDROIDTheme {
         MyPageTicket(
-            description = "첫 결제 시 첫 달 100원!"
+            description = stringResource(R.string.first_purchase)
         )
     }
 }

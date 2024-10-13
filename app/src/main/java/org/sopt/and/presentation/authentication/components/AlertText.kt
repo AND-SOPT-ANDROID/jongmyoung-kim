@@ -41,7 +41,7 @@ fun AlertText(
         Icon(
             modifier = Modifier.padding(end = 4.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_alert),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.ic_alert),
             tint = textColor
         )
         Text(

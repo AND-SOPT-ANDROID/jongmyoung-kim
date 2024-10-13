@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -75,7 +76,7 @@ private fun MyPageContentsItem(
                 .size(84.dp)
                 .align(Alignment.CenterHorizontally),
             imageVector = ImageVector.vectorResource(R.drawable.ic_alert),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.ic_alert),
             tint = LightGray
         )
         Text(

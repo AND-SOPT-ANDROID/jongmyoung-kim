@@ -148,7 +148,7 @@ private fun SnsButton(
             modifier = Modifier
                 .size(20.dp),
             imageVector = ImageVector.vectorResource(logo),
-            contentDescription = null
+            contentDescription = stringResource(R.string.logo_sns)
         )
     }
 }

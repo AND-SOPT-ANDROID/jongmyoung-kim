@@ -71,7 +71,7 @@ fun MyPageScreen(
                     .size(28.dp)
                     .noRippleClickable { },
                 imageVector = ImageVector.vectorResource(R.drawable.ic_notification),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.ic_notification),
                 tint = Color.White
             )
             Icon(
@@ -80,7 +80,7 @@ fun MyPageScreen(
                     .size(28.dp)
                     .noRippleClickable { },
                 imageVector = ImageVector.vectorResource(R.drawable.ic_setting),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.ic_setting),
                 tint = Color.White
             )
         }

@@ -4,6 +4,14 @@
     <!--    Components-->
     <string name="hide">hide</string>
     <string name="show">show</string>
+    <string name="ic_alert">alert_icon</string>
+    <string name="ic_back">back_icon</string>
+    <string name="ic_close">close_icon</string>
+    <string name="ic_forward">forward_icon</string>
+    <string name="ic_setting">setting_icon</string>
+    <string name="ic_notification">notification_icon</string>
+    <string name="logo_wavve">wavve_logo</string>
+    <string name="logo_sns">sns_logo</string>
 
     <!--    Sign In-->
     <string name="sign_in">로그인</string>
