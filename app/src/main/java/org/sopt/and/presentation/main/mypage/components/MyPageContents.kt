@@ -53,9 +53,9 @@ fun MyPageContents(
 
 @Composable
 private fun MyPageContentsItem(
-    modifier: Modifier = Modifier,
     title: String,
-    description: String
+    description: String,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),

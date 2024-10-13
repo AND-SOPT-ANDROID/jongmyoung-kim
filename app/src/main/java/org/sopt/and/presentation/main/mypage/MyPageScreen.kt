@@ -37,8 +37,8 @@ import org.sopt.and.presentation.theme.WavveMain
 
 @Composable
 fun MyPageScreen(
-    modifier: Modifier = Modifier,
-    userEmail: String = ""
+    userEmail: String,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -110,6 +110,6 @@ fun MyPageScreen(
 @Composable
 private fun MyPageScreenPreview() {
     ANDANDROIDTheme {
-        MyPageScreen()
+        MyPageScreen("")
     }
 }

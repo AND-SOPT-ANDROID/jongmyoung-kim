@@ -25,8 +25,8 @@ import org.sopt.and.presentation.theme.LightGray
 
 @Composable
 fun MyPageTicket(
+    description: String,
     modifier: Modifier = Modifier,
-    description: String = ""
 ) {
     Column(
         modifier = modifier
