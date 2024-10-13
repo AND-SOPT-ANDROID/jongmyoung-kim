@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,7 +58,7 @@ fun AlertText(
 private fun AlertTextPreview() {
     ANDANDROIDTheme {
         AlertText(
-            value = "로그인, 비밀번호 찾기, 알림에 사용되 정확한 이메일을 입력해 주세요.",
+            value = stringResource(R.string.sign_up_email_noti),
         )
     }
 }

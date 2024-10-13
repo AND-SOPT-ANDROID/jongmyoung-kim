@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,31 +34,15 @@ import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.LightGray
 import org.sopt.and.presentation.util.Constants
-import org.sopt.and.presentation.util.coloredText
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     onSignUpClick: (String, String) -> Unit = { _, _ -> }
 ) {
-    val annotatedString = coloredText(
-        string1 = "이메일과 비밀번호",
-        stringColor1 = Color.White,
-        string2 = "만으로\n",
-        stringColor2 = LightGray
-    )
-    val annotatedString2 = coloredText(
-        string1 = "Wavve를 즐길 수 ",
-        stringColor1 = Color.White,
-        string2 = "있어요!",
-        stringColor2 = LightGray
-    )
     val scrollState = rememberScrollState()
     var emailInput by remember { mutableStateOf("") }
     var passwordInput by remember { mutableStateOf("") }
-//    var isEmailValid by remember { mutableStateOf(false) }
-//    var isPasswordValid by remember { mutableStateOf(false) }
-//    val isButtonEnabled = emailInput.isNotEmpty() && passwordInput.isNotEmpty() && isEmailValid && isPasswordValid
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -70,7 +56,29 @@ fun SignUpScreen(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .padding(vertical = 12.dp),
-                text = annotatedString + annotatedString2,
+                text = buildAnnotatedString {
+                    append(stringResource(R.string.sign_up_greeting))
+                    addStyle(
+                        style = SpanStyle(color = Color.White),
+                        start = 0,
+                        end = 9
+                    )
+                    addStyle(
+                        style = SpanStyle(color = LightGray),
+                        start = 9,
+                        end = 12
+                    )
+                    addStyle(
+                        style = SpanStyle(color = Color.White),
+                        start = 13,
+                        end = 24
+                    )
+                    addStyle(
+                        style = SpanStyle(color = LightGray),
+                        start = 25,
+                        end = 29
+                    )
+                },
                 style = MaterialTheme.typography.titleLarge
             )
             CustomTextField(
@@ -81,7 +89,6 @@ fun SignUpScreen(
                 hint = stringResource(R.string.sign_up_email_hint),
                 onValueChange = {
                     if (it.length <= Constants.MAX_EMAIL) emailInput = it
-//                    isEmailValid = isValidEmail(emailInput)
                 }
             )
             AlertText(
@@ -95,7 +102,6 @@ fun SignUpScreen(
                 hint = stringResource(R.string.sign_up_password_hint),
                 onValueChange = {
                     if (it.length <= Constants.MAX_PASSWORD) passwordInput = it
-//                    isPasswordValid = isValidPassword(passwordInput)
                 },
                 isPassword = true,
                 visualTransformation = PasswordVisualTransformation()
@@ -115,10 +121,7 @@ fun SignUpScreen(
                 .align(Alignment.BottomCenter)
                 .height(48.dp)
                 .fillMaxWidth()
-                .background(
-//                    if (isButtonEnabled) WavveMain else LightGray
-                    LightGray
-                )
+                .background(LightGray)
                 .clickable(
                     enabled = true,
                     indication = null,

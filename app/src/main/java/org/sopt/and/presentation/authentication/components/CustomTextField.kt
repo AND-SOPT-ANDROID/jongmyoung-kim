@@ -17,10 +17,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.ExtraDarkGray
@@ -65,7 +67,7 @@ fun CustomTextField(
         ),
         trailingIcon = {
             if (isPassword) {
-                val iconText = if (isPasswordVisible) "hide" else "show"
+                val iconText = if (isPasswordVisible) stringResource(R.string.hide) else stringResource(R.string.show)
                 Text(
                     modifier = Modifier
                         .padding(end = 12.dp)
