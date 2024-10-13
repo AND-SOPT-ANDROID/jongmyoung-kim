@@ -36,11 +36,35 @@ import org.sopt.and.presentation.theme.LightGray
 import org.sopt.and.presentation.theme.Naver
 import org.sopt.and.presentation.theme.TWorld
 
+
+/**
+ * SNS account types
+ *
+ * 추후 패키지 분리 예정
+ *
+ * @property type
+ * @property logo
+ * @property logoColor
+ * @constructor Create empty SNS account types
+ */
+enum class SNSAccountTypes(
+    val type: String,
+    @DrawableRes val logo: Int,
+    val logoColor: Color
+) {
+    KAKAO("kakao", R.drawable.kakao_logo, Kakao),
+    TWORLD("tworld", R.drawable.tworld_logo, TWorld),
+    NAVER("naver", R.drawable.naver_logo, Naver),
+    FACEBOOK("facebook", R.drawable.facebook_logo, Facebook),
+    APPLE("apple", R.drawable.apple_logo, Color.White)
+}
+
 @Composable
 fun SnsAccountTab(
     title: String,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.labelMedium
+    textStyle: TextStyle = MaterialTheme.typography.labelMedium,
+    items: List<SNSAccountTypes> = SNSAccountTypes.entries
 ) {
     Column(
         modifier = modifier,
@@ -71,41 +95,15 @@ fun SnsAccountTab(
             modifier = Modifier.padding(top = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            SnsButton(
-                logo = R.drawable.kakao_logo,
-                backgroundColor = Kakao,
-                onSocialClick = {
+            items.forEach {
+                SnsButton(
+                    logo = it.logo,
+                    backgroundColor = it.logoColor,
+                    onSocialClick = {
 
-                }
-            )
-            SnsButton(
-                logo = R.drawable.tworld_logo,
-                backgroundColor = TWorld,
-                onSocialClick = {
-
-                }
-            )
-            SnsButton(
-                logo = R.drawable.naver_logo,
-                backgroundColor = Naver,
-                onSocialClick = {
-
-                }
-            )
-            SnsButton(
-                logo = R.drawable.facebook_logo,
-                backgroundColor = Facebook,
-                onSocialClick = {
-
-                }
-            )
-            SnsButton(
-                logo = R.drawable.apple_logo,
-                backgroundColor = Color.White,
-                onSocialClick = {
-
-                }
-            )
+                    }
+                )
+            }
         }
         Row(
             modifier = Modifier
