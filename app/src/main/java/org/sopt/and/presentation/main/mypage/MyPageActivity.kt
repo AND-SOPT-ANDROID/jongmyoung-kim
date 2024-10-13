@@ -14,14 +14,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
+import org.sopt.and.presentation.util.Constants.Companion.PREFS_NAME
+import org.sopt.and.presentation.util.Constants.Companion.USER_EMAIL
 
 class MyPageActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val sharedPreferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
-            val userEmail = sharedPreferences.getString("user_email", "") ?: ""
+            val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val userEmail = sharedPreferences.getString(USER_EMAIL, "") ?: ""
             val snackbarHostState = remember { SnackbarHostState() }
             val snackbarMessage = intent.getStringExtra("snackbar_message") ?: ""
 

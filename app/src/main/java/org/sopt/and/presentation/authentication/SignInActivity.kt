@@ -19,6 +19,9 @@ import kotlinx.coroutines.launch
 import org.sopt.and.R
 import org.sopt.and.presentation.main.mypage.MyPageActivity
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
+import org.sopt.and.presentation.util.Constants.Companion.IS_LOGGED_IN
+import org.sopt.and.presentation.util.Constants.Companion.PREFS_NAME
+import org.sopt.and.presentation.util.Constants.Companion.USER_EMAIL
 
 class SignInActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,10 +77,10 @@ class SignInActivity : ComponentActivity() {
         coroutineScope: CoroutineScope
     ) {
         if (emailInput == correctEmail && passwordInput == correctPassword && emailInput.isNotEmpty() && passwordInput.isNotEmpty()) {
-            val sharedPreferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+            val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             with(sharedPreferences.edit()) {
-                putBoolean("is_logged_in", true)
-                putString("user_email", emailInput)
+                putBoolean(IS_LOGGED_IN, true)
+                putString(USER_EMAIL, emailInput)
                 apply()
             }
             Intent(this, MyPageActivity::class.java).apply {
