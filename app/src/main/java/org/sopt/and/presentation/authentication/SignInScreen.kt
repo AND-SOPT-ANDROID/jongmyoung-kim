@@ -39,9 +39,10 @@ import org.sopt.and.presentation.util.Constants
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
+    onSignInClick: (String, String) -> Unit = { _, _ -> },
     onSignUpClick: () -> Unit = {},
-    onSignInClick: (String, String) -> Unit
-) {
+
+    ) {
     var emailInput by remember { mutableStateOf("") }
     var passwordInput by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
@@ -66,6 +67,7 @@ fun SignInScreen(
             },
             shape = RoundedCornerShape(5.dp)
         )
+//        2주차 과제에 사용될 Custom TextField 아래 경고 문구
 //        AlertText(
 //            value = stringResource(R.string.sign_in_email_noti),
 //            textColor = ErrorText
@@ -83,6 +85,7 @@ fun SignInScreen(
             shape = RoundedCornerShape(5.dp),
             visualTransformation = PasswordVisualTransformation()
         )
+//        2주차 과제에 사용될 Custom TextField 아래 경고 문구
 //        AlertText(
 //            value = stringResource(R.string.sign_in_password_noti),
 //            textColor = ErrorText
@@ -151,6 +154,6 @@ fun SignInScreen(
 @Composable
 private fun SignInScreenPreview() {
     ANDANDROIDTheme {
-        SignInScreen(Modifier, {}, { _, _ -> })
+        SignInScreen()
     }
 }

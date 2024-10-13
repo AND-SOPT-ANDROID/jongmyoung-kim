@@ -38,8 +38,8 @@ import org.sopt.and.presentation.theme.TWorld
 
 @Composable
 fun SnsAccountTab(
-    modifier: Modifier = Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
     Column(
@@ -129,9 +129,9 @@ fun SnsAccountTab(
 
 @Composable
 private fun SnsButton(
-    modifier: Modifier = Modifier,
     @DrawableRes logo: Int,
     backgroundColor: Color,
+    modifier: Modifier = Modifier,
     onSocialClick: () -> Unit = {}
 ) {
     Box(

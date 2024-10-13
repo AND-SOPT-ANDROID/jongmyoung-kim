@@ -31,14 +31,13 @@ import org.sopt.and.presentation.authentication.components.SnsAccountTab
 import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
 import org.sopt.and.presentation.util.Constants
 import org.sopt.and.presentation.util.coloredText
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    onSignUpClick: (String, String) -> Unit
+    onSignUpClick: (String, String) -> Unit = { _, _ -> }
 ) {
     val annotatedString = coloredText(
         string1 = "이메일과 비밀번호",

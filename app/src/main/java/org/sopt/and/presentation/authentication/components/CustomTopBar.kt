@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.authentication.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,10 +23,11 @@ import org.sopt.and.presentation.theme.ANDANDROIDTheme
 
 @Composable
 fun SignUpTopBar(
+    modifier: Modifier = Modifier,
     onCancelClick: () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
             .height(56.dp),
@@ -54,10 +54,11 @@ fun SignUpTopBar(
 
 @Composable
 fun SignInTopBar(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
             .height(56.dp),
@@ -94,10 +95,11 @@ fun SignInTopBar(
  */
 @Composable
 fun WelcomeTopBar(
+    modifier: Modifier = Modifier,
     onNavigateToLogin: () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
             .height(56.dp),

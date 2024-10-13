@@ -29,10 +29,10 @@ import org.sopt.and.presentation.theme.WavveMain
 
 @Composable
 fun CustomTextField(
-    modifier: Modifier = Modifier,
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     shape: Shape = RoundedCornerShape(8.dp),

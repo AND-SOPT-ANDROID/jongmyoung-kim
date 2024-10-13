@@ -29,8 +29,8 @@ import org.sopt.and.presentation.theme.LightGray
  */
 @Composable
 fun AlertText(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     textColor: Color = LightGray
 ) {
     Row(
