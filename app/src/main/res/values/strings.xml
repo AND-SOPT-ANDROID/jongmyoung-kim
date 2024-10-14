@@ -1,3 +1,49 @@
 <resources>
     <string name="app_name">AND-ANDROID</string>
+
+    <!--    Components-->
+    <string name="hide">hide</string>
+    <string name="show">show</string>
+    <string name="ic_alert">alert_icon</string>
+    <string name="ic_back">back_icon</string>
+    <string name="ic_close">close_icon</string>
+    <string name="ic_forward">forward_icon</string>
+    <string name="ic_setting">setting_icon</string>
+    <string name="ic_notification">notification_icon</string>
+    <string name="logo_wavve">wavve_logo</string>
+    <string name="logo_sns">sns_logo</string>
+
+    <!--    Sign In-->
+    <string name="sign_in">로그인</string>
+    <string name="find_id">아이디 찾기</string>
+    <string name="vertical_bar">\t|\t</string>
+    <string name="reset_password">비밀번호 재설정</string>
+    <string name="sign_in_email_hint">이메일 주소 또는 아이디</string>
+    <string name="sign_in_email_noti">이메일 또는 아이디를 입력해주세요.</string>
+    <string name="sign_in_password_hint">비밀번호</string>
+    <string name="sign_in_password_noti">비밀번호를 입력해주세요.</string>
+    <string name="sns_sign_in">또는 다른 서비스 계정으로 로그인</string>
+    <string name="sns_dot">·</string>
+    <string name="sns_notification">SNS계정으로 간편하게 가입하여 서비스를 이용하실 수 있습니다.\n기존 POOQ 계정 혹은 Wavve 계정과는 연동되지 않으니 이용이 참고하세요.</string>
+    <string name="sign_in_success">로그인 성공</string>
+    <string name="sign_in_failed">아이디 또는 비밀번호를 확인해주세요.</string>
+
+    <!--    Sign Up-->
+    <string name="sign_up_greeting">이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!</string>
+    <string name="sns_sign_up">또는 다른 서비스 계정으로 가입</string>
+    <string name="sign_up">회원가입</string>
+    <string name="sign_up_email_noti">로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해 주세요.</string>
+    <string name="sign_up_email_hint">wavve@example.com</string>
+    <string name="sign_up_password_hint">Wavve 비밀번호 설정</string>
+    <string name="sign_up_password_noti">비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해 주세요.</string>
+    <string name="sign_up_email_error_length">5~50자의 이메일 형식으로 입력해주세요.</string>
+    <string name="sign_up_email_error_regex">입력하신 이메일 주소가 형식에 맞지 않습니다. 다시 입력해주세요.</string>
+    <string name="wavve_sign_up">Wavve 회원가입</string>
+    <string name="sign_up_success">회원가입이 완료되었습니다.</string>
+
+    <!--    My Page-->
+    <string name="purchase">구매하기</string>
+    <string name="first_purchase">첫 결제 시 첫 달 100원!</string>
+    <string name="no_ticket">현재 보유하신 이용권이 없습니다.</string>
+
 </resources>
