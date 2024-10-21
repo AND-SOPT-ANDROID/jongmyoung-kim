@@ -1,4 +1,4 @@
-package org.sopt.and.presentation.main.mypage.components
+package org.sopt.and.presentation.mypage.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -22,6 +21,7 @@ import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.LightGray
+import org.sopt.and.presentation.theme.White
 
 @Composable
 fun MyPageTicket(
@@ -35,7 +35,7 @@ fun MyPageTicket(
             .padding(horizontal = 12.dp)
             .padding(bottom = 8.dp)
             .noRippleClickable {
-
+                // TODO: 클릭 이벤트 구현
             },
         verticalArrangement = Arrangement.Center
     ) {
@@ -49,13 +49,13 @@ fun MyPageTicket(
         ) {
             Text(
                 text = stringResource(R.string.purchase),
-                color = Color.White,
+                color = White,
                 style = MaterialTheme.typography.bodyLarge
             )
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_forward),
-                contentDescription = stringResource(R.string.purchase),
-                tint = Color.White
+                contentDescription = stringResource(R.string.ic_forward),
+                tint = White
             )
         }
     }
