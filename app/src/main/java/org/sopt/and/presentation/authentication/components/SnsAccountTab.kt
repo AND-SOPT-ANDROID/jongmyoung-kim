@@ -35,6 +35,7 @@ import org.sopt.and.presentation.theme.Kakao
 import org.sopt.and.presentation.theme.LightGray
 import org.sopt.and.presentation.theme.Naver
 import org.sopt.and.presentation.theme.TWorld
+import org.sopt.and.presentation.theme.White
 
 
 /**
@@ -52,11 +53,11 @@ enum class SNSAccountTypes(
     @DrawableRes val logo: Int,
     val logoColor: Color
 ) {
-    KAKAO("kakao", R.drawable.kakao_logo, Kakao),
-    TWORLD("tworld", R.drawable.tworld_logo, TWorld),
-    NAVER("naver", R.drawable.naver_logo, Naver),
-    FACEBOOK("facebook", R.drawable.facebook_logo, Facebook),
-    APPLE("apple", R.drawable.apple_logo, Color.White)
+    KAKAO("kakao", R.drawable.logo_kakao, Kakao),
+    TWORLD("tworld", R.drawable.logo_tworld, TWorld),
+    NAVER("naver", R.drawable.logo_naver, Naver),
+    FACEBOOK("facebook", R.drawable.logo_facebook, Facebook),
+    APPLE("apple", R.drawable.logo_apple, White)
 }
 
 @Composable
@@ -100,7 +101,7 @@ fun SnsAccountTab(
                     logo = it.logo,
                     backgroundColor = it.logoColor,
                     onSocialClick = {
-
+                        // TODO: 소셜 로그인 버튼 기능 추가
                     }
                 )
             }
@@ -143,8 +144,7 @@ private fun SnsButton(
         contentAlignment = Alignment.Center
     ) {
         Image(
-            modifier = Modifier
-                .size(20.dp),
+            modifier = Modifier.size(20.dp),
             imageVector = ImageVector.vectorResource(logo),
             contentDescription = stringResource(R.string.logo_sns)
         )

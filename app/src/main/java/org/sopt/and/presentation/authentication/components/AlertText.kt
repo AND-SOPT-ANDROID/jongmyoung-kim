@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ErrorText
 import org.sopt.and.presentation.theme.LightGray
 
 /**
