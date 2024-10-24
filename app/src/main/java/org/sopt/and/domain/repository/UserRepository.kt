@@ -1,5 +1,7 @@
 package org.sopt.and.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+
 interface UserRepository {
     fun signIn(
         email: String,
@@ -11,4 +13,6 @@ interface UserRepository {
     ): Result<Unit>
 
     fun signOut(): Result<Unit>
+
+    suspend fun getUserEmail(): Result<String>
 }

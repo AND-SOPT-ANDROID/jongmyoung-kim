@@ -1,6 +1,5 @@
 package org.sopt.and.data.repository
 
-import android.util.Log
 import org.sopt.and.data.local.UserDataSource
 import org.sopt.and.domain.exception.SignInError
 import org.sopt.and.domain.repository.UserRepository
@@ -44,4 +43,12 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUserEmail(): Result<String> {
+        return try {
+            val userEmail = userDataSource.getUserInfo().first
+            Result.success(userEmail)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
