@@ -1,5 +1,6 @@
 package org.sopt.and.data.repository
 
+import android.util.Log
 import org.sopt.and.data.local.UserDataSource
 import org.sopt.and.domain.exception.SignInError
 import org.sopt.and.domain.repository.UserRepository
@@ -34,8 +35,13 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun signOut() {
-        TODO("Not yet implemented")
+    override fun signOut(): Result<Unit> {
+        return try {
+            userDataSource.clearUserInfo()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
 }

@@ -10,5 +10,5 @@ interface UserRepository {
         email: String, password: String
     ): Result<Unit>
 
-    fun signOut()
+    fun signOut(): Result<Unit>
 }
