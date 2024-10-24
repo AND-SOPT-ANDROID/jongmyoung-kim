@@ -14,6 +14,8 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,25 +28,91 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
-import org.sopt.and.presentation.authentication.components.CustomTextField
+import org.sopt.and.presentation.authentication.components.AlertText
+import org.sopt.and.presentation.authentication.components.AuthTextField
 import org.sopt.and.presentation.authentication.components.SignInTopBar
 import org.sopt.and.presentation.authentication.components.SnsAccountTab
+import org.sopt.and.presentation.common.CustomConfirmDialog
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
+import org.sopt.and.presentation.theme.Error
 import org.sopt.and.presentation.theme.LightGray
 import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.util.Constants
 
 @Composable
 fun SignInScreen(
-    modifier: Modifier = Modifier,
-    onSignInClick: (String, String) -> Unit = { _, _ -> },
-    onSignUpClick: () -> Unit = {},
+    navigateToHome: () -> Unit,
+    navigateToSignUp: () -> Unit,
+    viewModel: SignInViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    ) {
-    var emailInput by remember { mutableStateOf("") }
-    var passwordInput by remember { mutableStateOf("") }
+    var showEmailError by remember { mutableStateOf(false) }
+    var showPasswordError by remember { mutableStateOf(false) }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.sideEffect.collect { sideEffect ->
+                when (sideEffect) {
+                    is SignInSideEffect.NavigateToHome -> navigateToHome()
+                    is SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
+                    is SignInSideEffect.InvalidEmail -> {
+                        showEmailError = true
+                        showPasswordError = false
+                    }
+                    is SignInSideEffect.InvalidPassword -> {
+                        showPasswordError = true
+                        showEmailError = false
+                    }
+                    is SignInSideEffect.SignInFailed -> {
+                        showEmailError = false
+                        showPasswordError = false
+                    }
+                }
+            }
+        }
+    }
+    if (uiState.isDialogShown) {
+        CustomConfirmDialog(
+            title = R.string.wavve,
+            description = R.string.sign_in_failed,
+            onDismissRequest = {
+                viewModel.updateDialogVisibility(false)
+            },
+            dismissText = R.string.confirm,
+        )
+    }
+
+    SignInScreenContent(
+        emailInput = uiState.emailInput,
+        onEmailChange = { viewModel.updateEmailInput(it) },
+        passwordInput = uiState.passwordInput,
+        onPasswordChange = { viewModel.updatePasswordInput(it) },
+        showEmailError = showEmailError,
+        showPasswordError = showPasswordError,
+        onNavigateToSignUp = viewModel::navigateToSignUp,
+        onSignInClick = viewModel::signIn
+    )
+}
+
+@Composable
+private fun SignInScreenContent(
+    emailInput: String,
+    onEmailChange: (String) -> Unit,
+    passwordInput: String,
+    onPasswordChange: (String) -> Unit,
+    showEmailError: Boolean,
+    showPasswordError: Boolean,
+    onNavigateToSignUp: () -> Unit,
+    onSignInClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -55,41 +123,38 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SignInTopBar()
-
-        CustomTextField(
+        AuthTextField(
             modifier = Modifier
                 .padding(top = 48.dp)
                 .height(56.dp),
             value = emailInput,
             hint = stringResource(R.string.sign_in_email_hint),
-            onValueChange = {
-                if (it.length <= Constants.MAX_EMAIL) emailInput = it
-            },
+            onValueChange = { onEmailChange(it) },
             shape = RoundedCornerShape(5.dp)
         )
-//        2주차 과제에 사용될 Custom TextField 아래 경고 문구
-//        AlertText(
-//            value = stringResource(R.string.sign_in_email_noti),
-//            textColor = ErrorText
-//        )
-        CustomTextField(
+        if (showEmailError) {
+            AlertText(
+                value = stringResource(R.string.sign_in_email_noti),
+                textColor = Error
+            )
+        }
+        AuthTextField(
             modifier = Modifier
                 .padding(top = 4.dp)
                 .height(56.dp),
             value = passwordInput,
             hint = stringResource(R.string.sign_in_password_hint),
-            onValueChange = {
-                if (it.length <= Constants.MAX_PASSWORD) passwordInput = it
-            },
+            onValueChange = { onPasswordChange(it) },
             isPassword = true,
             shape = RoundedCornerShape(5.dp),
             visualTransformation = PasswordVisualTransformation()
         )
-//        2주차 과제에 사용될 Custom TextField 아래 경고 문구
-//        AlertText(
-//            value = stringResource(R.string.sign_in_password_noti),
-//            textColor = ErrorText
-//        )
+        if (showPasswordError) {
+            AlertText(
+                value = stringResource(R.string.sign_in_password_noti),
+                textColor = Error
+            )
+        }
         Button(
             modifier = Modifier
                 .padding(top = 32.dp)
@@ -100,7 +165,7 @@ fun SignInScreen(
                 disabledContainerColor = WavveMain,
                 disabledContentColor = Color.White
             ),
-            onClick = { onSignInClick(emailInput, passwordInput) },
+            onClick = { onSignInClick() },
             shape = RoundedCornerShape(100.dp)
         ) {
             Text(
@@ -135,9 +200,7 @@ fun SignInScreen(
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
-                modifier = Modifier.noRippleClickable {
-                    onSignUpClick()
-                },
+                modifier = Modifier.noRippleClickable { onNavigateToSignUp() },
                 text = stringResource(R.string.sign_up),
                 color = LightGray,
                 style = MaterialTheme.typography.labelSmall
@@ -154,6 +217,9 @@ fun SignInScreen(
 @Composable
 private fun SignInScreenPreview() {
     ANDANDROIDTheme {
-        SignInScreen()
+        SignInScreen(
+            navigateToHome = {},
+            navigateToSignUp = {}
+        )
     }
 }
