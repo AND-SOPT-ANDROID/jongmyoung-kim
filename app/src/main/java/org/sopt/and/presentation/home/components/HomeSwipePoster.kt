@@ -29,13 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import org.sopt.and.R
-import org.sopt.and.domain.model.Poster
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.White
 
 @Composable
 fun HomeSwipePoster(
-    poster: Poster,
+    poster: Pair<String, List<String>>,
     modifier: Modifier = Modifier,
     isRanked: Boolean = false
 ) {
@@ -47,7 +46,7 @@ fun HomeSwipePoster(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = poster.title,
+                text = poster.first,
                 color = White,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.ExtraBold
@@ -64,7 +63,7 @@ fun HomeSwipePoster(
             modifier = Modifier.padding(top = 8.dp)
         ) {
             itemsIndexed(
-                items = poster.posterUriList,
+                items = poster.second,
                 key = { index, _ -> index },
                 contentType = { _, item -> item }
             ) { index, uri ->
@@ -73,13 +72,13 @@ fun HomeSwipePoster(
                         .height(if (isRanked) 300.dp else 184.dp)
                         .padding(
                             start = if (index == 0) 12.dp else 8.dp,
-                            end = if (index == poster.posterUriList.lastIndex) 12.dp else 0.dp,
+                            end = if (index == poster.second.lastIndex) 12.dp else 0.dp,
                             bottom = if (isRanked) 24.dp else 0.dp
                         )
                 ) {
                     AsyncImage(
                         model = uri,
-                        contentDescription = poster.title,
+                        contentDescription = poster.first,
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(RoundedCornerShape(8.dp)),
@@ -108,7 +107,7 @@ fun HomeSwipePoster(
 private fun HomeSwipePosterPreview() {
     ANDANDROIDTheme {
         HomeSwipePoster(
-            Poster("", emptyList()),
+            Pair("", emptyList()),
         )
     }
 }

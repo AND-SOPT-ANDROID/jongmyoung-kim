@@ -26,7 +26,6 @@ import coil3.compose.AsyncImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.sopt.and.R
-import org.sopt.and.domain.model.Banner
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.ExtraDarkGray
 import org.sopt.and.presentation.theme.LightGray
@@ -35,7 +34,7 @@ import org.sopt.and.presentation.theme.White
 
 @Composable
 fun HomeSwipePager(
-    banners: List<Banner>,
+    banners: List<Pair<String, String>>,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -68,11 +67,11 @@ fun HomeSwipePager(
                     .border(width = 1.dp, color = ExtraDarkGray, shape = RoundedCornerShape(8.dp))
             ) {
                 AsyncImage(
-                    model = banners[page % banners.size].bannerUri,
+                    model = banners[page % banners.size].first,
                     contentDescription = stringResource(R.string.img_banner)
                 )
                 AsyncImage(
-                    model = banners[page % banners.size].subtitleUri,
+                    model = banners[page % banners.size].second,
                     contentDescription = stringResource(R.string.img_banner_description)
                 )
             }
