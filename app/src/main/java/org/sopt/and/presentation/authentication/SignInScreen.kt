@@ -48,12 +48,13 @@ import org.sopt.and.presentation.theme.WavveMain
 
 @Composable
 fun SignInScreen(
-    onNavigateToHome: () -> Unit,
+    onNavigateToHome: (String?) -> Unit,
     onNavigateToSignUp: () -> Unit,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val signInMessage = stringResource(R.string.sign_in_success)
 
     var showEmailError by remember { mutableStateOf(false) }
     var showPasswordError by remember { mutableStateOf(false) }
@@ -62,7 +63,7 @@ fun SignInScreen(
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.sideEffect.collect { sideEffect ->
                 when (sideEffect) {
-                    is SignInSideEffect.NavigateToHome -> onNavigateToHome()
+                    is SignInSideEffect.NavigateToHome -> onNavigateToHome(signInMessage)
                     is SignInSideEffect.NavigateToSignUp -> onNavigateToSignUp()
                     is SignInSideEffect.InvalidEmail -> {
                         showEmailError = true
