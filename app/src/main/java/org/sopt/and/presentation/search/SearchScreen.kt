@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.sopt.and.R
-import org.sopt.and.presentation.common.CustomTabRow
+import org.sopt.and.presentation.common.CommonTabRow
 import org.sopt.and.presentation.search.components.SearchPopularItem
 import org.sopt.and.presentation.search.components.SearchTagButton
 import org.sopt.and.presentation.search.components.SearchTextField
@@ -85,7 +85,7 @@ private fun SearchScreenContent(
                 }
             }
             stickyHeader {
-                CustomTabRow(
+                CommonTabRow(
                     tabTitles = listOf("인기 시리즈", "인기 영화"),
                     selectedTabIndex = tab,
                     onTabSelected = {
