@@ -100,8 +100,8 @@ fun SignInScreen(
         onPasswordChange = { viewModel.updatePasswordInput(it) },
         showEmailError = showEmailError,
         showPasswordError = showPasswordError,
-        onNavigateToSignUp = viewModel::navigateToSignUp,
-        onSignInClick = viewModel::signIn
+        onNavigateToSignUp = viewModel::onNavigateToSignUp,
+        onSignInClick = viewModel::onSignInClicked
     )
 }
 

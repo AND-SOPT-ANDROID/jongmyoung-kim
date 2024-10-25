@@ -44,7 +44,7 @@ class SignInViewModel @Inject constructor(
         )
     }
 
-    fun signIn() = viewModelScope.launch {
+    fun onSignInClicked() = viewModelScope.launch {
         signInUseCase(uiState.value.emailInput, uiState.value.passwordInput).onSuccess {
             sideEffect.emit(SignInSideEffect.NavigateToHome)
         }.onFailure {
@@ -61,7 +61,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun navigateToSignUp() = viewModelScope.launch {
+    fun onNavigateToSignUp() = viewModelScope.launch {
         sideEffect.emit(SignInSideEffect.NavigateToSignUp)
     }
 }

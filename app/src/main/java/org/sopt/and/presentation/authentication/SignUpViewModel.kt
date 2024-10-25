@@ -53,18 +53,18 @@ class SignUpViewModel @Inject constructor(
         )
     }
 
-    fun navigateToSignIn() = viewModelScope.launch {
-        updateDialogVisibility(false)
-        sideEffect.emit(SignUpSideEffect.NavigateBackToSignIn)
-    }
-
-    fun signUp() = viewModelScope.launch {
+    fun onSignUpClicked() = viewModelScope.launch {
         signUpUseCase(uiState.value.emailInput, uiState.value.passwordInput).onSuccess {
             updateDialogVisibility(false)
             sideEffect.emit(SignUpSideEffect.NavigateToSignIn)
         }.onFailure {
             sideEffect.emit(SignUpSideEffect.Toast(it.message.orEmpty()))
         }
+    }
+
+    fun onNavigateToSignIn() = viewModelScope.launch {
+        updateDialogVisibility(false)
+        sideEffect.emit(SignUpSideEffect.NavigateBackToSignIn)
     }
 
     private fun isEmailValid(email: String) = emailRegex.matches(email) && email.length >= MIN_EMAIL

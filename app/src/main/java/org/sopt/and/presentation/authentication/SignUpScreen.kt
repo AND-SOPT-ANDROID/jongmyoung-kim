@@ -81,7 +81,7 @@ fun SignUpScreen(
             dismissText = R.string.dismiss,
             confirmText = R.string.confirm,
             onDismissRequest = { viewModel.updateDialogVisibility(false) },
-            onConfirmRequest = viewModel::navigateToSignIn
+            onConfirmRequest = viewModel::onNavigateToSignIn
         )
     }
 
@@ -93,7 +93,7 @@ fun SignUpScreen(
         isPasswordValid = uiState.isPasswordValid,
         onPasswordChange = { viewModel.updatePasswordInput(it) },
         onCancelClick = { viewModel.updateDialogVisibility(true) },
-        onSignUpClick = viewModel::signUp,
+        onSignUpClick = viewModel::onSignUpClicked,
         isButtonEnabled = uiState.isButtonEnabled
     )
 }
