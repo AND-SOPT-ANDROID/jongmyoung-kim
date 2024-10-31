@@ -11,19 +11,10 @@ class SignInUseCase @Inject constructor(
         email: String,
         password: String
     ): Result<Unit> {
-        return if (email.isEmpty()) {
-            Result.failure(SignInError.InvalidEmailException())
-        } else if (password.isEmpty()) {
-            Result.failure(SignInError.InvalidPasswordException())
-        } else {
-            val result = userRepository.signIn(email, password)
-
-            result.onFailure {
-                if (it is SignInError.SignInFailedException) {
-                    return Result.failure(SignInError.SignInFailedException())
-                }
-            }
-            return result
+        return when {
+            email.isEmpty() -> Result.failure(SignInError.InvalidEmailException())
+            password.isEmpty() -> Result.failure(SignInError.InvalidPasswordException())
+            else -> userRepository.signIn(email, password)
         }
     }
 }
