@@ -41,7 +41,7 @@ fun SignUpTopBar(
             modifier = Modifier
                 .size(36.dp)
                 .align(Alignment.CenterEnd)
-                .noRippleClickable { onCancelClick() },
+                .noRippleClickable(onCancelClick),
             imageVector = ImageVector.vectorResource(R.drawable.ic_close),
             contentDescription = stringResource(R.string.ic_close),
             tint = White
@@ -65,16 +65,13 @@ fun SignInTopBar(
             modifier = Modifier
                 .size(36.dp)
                 .align(Alignment.CenterStart)
-                .noRippleClickable {
-                    onBackClick()
-                },
+                .noRippleClickable(onBackClick),
             imageVector = ImageVector.vectorResource(R.drawable.ic_back),
             contentDescription = stringResource(R.string.ic_back),
             tint = White
         )
         Icon(
-            modifier = Modifier
-                .align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
             imageVector = ImageVector.vectorResource(R.drawable.logo_wavve),
             contentDescription = stringResource(R.string.logo_wavve),
             tint = White
@@ -103,8 +100,7 @@ fun WelcomeTopBar(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier
-                .align(Alignment.CenterStart),
+            modifier = Modifier.align(Alignment.CenterStart),
             imageVector = ImageVector.vectorResource(R.drawable.logo_wavve),
             contentDescription = stringResource(R.string.logo_wavve),
             tint = White
@@ -112,9 +108,7 @@ fun WelcomeTopBar(
         Text(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .noRippleClickable {
-                    onNavigateToLogin()
-                },
+                .noRippleClickable(onNavigateToLogin),
             text = stringResource(R.string.sign_in),
             color = White
         )

@@ -69,7 +69,7 @@ fun AuthTextField(
                     imeAction = ImeAction.Next
                 )
             },
-            keyboardActions = keyboardActions, // TODO: 로그인, 회원가입 기능 추가
+            keyboardActions = keyboardActions,
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
                 color = White
@@ -98,9 +98,9 @@ fun AuthTextField(
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .noRippleClickable {
-                        isPasswordVisible = !isPasswordVisible
-                    },
+                    .noRippleClickable(
+                        onClick = { isPasswordVisible = !isPasswordVisible }
+                    ),
                 text = iconText,
                 style = MaterialTheme.typography.bodyMedium,
                 color = White

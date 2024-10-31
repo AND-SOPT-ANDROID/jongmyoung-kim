@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.authentication
 
-import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.exception.SignInError
 import org.sopt.and.domain.usecase.SignInUseCase
+import org.sopt.and.presentation.authentication.sideeffect.SignInSideEffect
+import org.sopt.and.presentation.authentication.uistate.SignInUiState
 import org.sopt.and.presentation.util.Constants.Companion.MAX_EMAIL
 import org.sopt.and.presentation.util.Constants.Companion.MAX_PASSWORD
 import javax.inject.Inject
@@ -44,6 +45,13 @@ class SignInViewModel @Inject constructor(
         )
     }
 
+    fun updateErrorTextVisibility(isEmailErrorShown: Boolean, isPasswordErrorShown: Boolean) {
+        uiState.value = uiState.value.copy(
+            isEmailErrorShown = isEmailErrorShown,
+            isPasswordErrorShown = isPasswordErrorShown
+        )
+    }
+
     fun onSignInClicked() = viewModelScope.launch {
         signInUseCase(uiState.value.emailInput, uiState.value.passwordInput).onSuccess {
             sideEffect.emit(SignInSideEffect.NavigateToHome)
@@ -64,19 +72,4 @@ class SignInViewModel @Inject constructor(
     fun onNavigateToSignUp() = viewModelScope.launch {
         sideEffect.emit(SignInSideEffect.NavigateToSignUp)
     }
-}
-
-@Immutable
-data class SignInUiState(
-    val emailInput: String = "",
-    val passwordInput: String = "",
-    val isDialogShown: Boolean = false
-)
-
-sealed interface SignInSideEffect {
-    data object InvalidEmail : SignInSideEffect
-    data object InvalidPassword : SignInSideEffect
-    data object SignInFailed : SignInSideEffect
-    data object NavigateToSignUp : SignInSideEffect
-    data object NavigateToHome : SignInSideEffect
 }

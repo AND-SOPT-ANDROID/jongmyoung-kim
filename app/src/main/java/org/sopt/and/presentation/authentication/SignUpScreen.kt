@@ -3,23 +3,21 @@ package org.sopt.and.presentation.authentication
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -33,13 +31,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
 import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.authentication.components.AuthTextField
 import org.sopt.and.presentation.authentication.components.SignUpTopBar
 import org.sopt.and.presentation.authentication.components.SnsAccountTab
+import org.sopt.and.presentation.authentication.sideeffect.SignUpSideEffect
 import org.sopt.and.presentation.common.CustomActionDialog
+import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.Error
 import org.sopt.and.presentation.theme.LightGray
@@ -51,7 +52,7 @@ fun SignUpScreen(
     onNavigateToSignIn: (String?) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val signUpMessage = stringResource(R.string.sign_up_success)
@@ -64,9 +65,8 @@ fun SignUpScreen(
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.sideEffect.collect { sideEffect ->
                 when (sideEffect) {
-                    is SignUpSideEffect.Toast -> {
+                    is SignUpSideEffect.Toast ->
                         Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-                    }
                     is SignUpSideEffect.NavigateToSignIn -> onNavigateToSignIn(signUpMessage)
                     is SignUpSideEffect.NavigateBackToSignIn -> onNavigateToSignIn(null)
                 }
@@ -88,10 +88,10 @@ fun SignUpScreen(
     SignUpScreenContent(
         emailInput = uiState.emailInput,
         isEmailValid = uiState.isEmailValid,
-        onEmailChange = { viewModel.updateEmailInput(it) },
+        onEmailChange = viewModel::updateEmailInput,
         passwordInput = uiState.passwordInput,
         isPasswordValid = uiState.isPasswordValid,
-        onPasswordChange = { viewModel.updatePasswordInput(it) },
+        onPasswordChange = viewModel::updatePasswordInput,
         onCancelClick = { viewModel.updateDialogVisibility(true) },
         onSignUpClick = viewModel::onSignUpClicked,
         isButtonEnabled = uiState.isButtonEnabled
@@ -114,6 +114,7 @@ private fun SignUpScreenContent(
     val scrollState = rememberScrollState()
 
     Scaffold(
+        modifier.imePadding(),
         topBar = { SignUpTopBar(onCancelClick = onCancelClick) },
         bottomBar = {
             Box(
@@ -121,13 +122,10 @@ private fun SignUpScreenContent(
                     .height(48.dp)
                     .fillMaxWidth()
                     .background(if (isButtonEnabled) WavveMain else LightGray)
-                    .clickable(
+                    .noRippleClickable(
                         enabled = isButtonEnabled,
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ) {
-                        onSignUpClick()
-                    }
+                        onClick = onSignUpClick
+                    )
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -178,7 +176,7 @@ private fun SignUpScreenContent(
                     modifier = Modifier.padding(top = 4.dp),
                     value = emailInput,
                     hint = stringResource(R.string.sign_up_email_hint),
-                    onValueChange = { onEmailChange(it) },
+                    onValueChange = onEmailChange,
                     cursorBrush = SolidColor(White)
                 )
                 AlertText(
@@ -189,7 +187,7 @@ private fun SignUpScreenContent(
                 AuthTextField(
                     value = passwordInput,
                     hint = stringResource(R.string.sign_up_password_hint),
-                    onValueChange = { onPasswordChange(it) },
+                    onValueChange = onPasswordChange,
                     isPassword = true,
                     visualTransformation = PasswordVisualTransformation(),
                     cursorBrush = SolidColor(White)

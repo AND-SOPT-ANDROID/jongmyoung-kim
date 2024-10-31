@@ -26,46 +26,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
+import org.sopt.and.presentation.authentication.SnsAccountType
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.DarkGray
 import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.Facebook
-import org.sopt.and.presentation.theme.Kakao
 import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.Naver
-import org.sopt.and.presentation.theme.TWorld
-import org.sopt.and.presentation.theme.White
-
-
-/**
- * SNS account types
- *
- * 추후 패키지 분리 예정
- *
- * @property type
- * @property logo
- * @property logoColor
- * @constructor Create empty SNS account types
- */
-enum class SNSAccountTypes(
-    val type: String,
-    @DrawableRes val logo: Int,
-    val logoColor: Color
-) {
-    KAKAO("kakao", R.drawable.logo_kakao, Kakao),
-    TWORLD("tworld", R.drawable.logo_tworld, TWorld),
-    NAVER("naver", R.drawable.logo_naver, Naver),
-    FACEBOOK("facebook", R.drawable.logo_facebook, Facebook),
-    APPLE("apple", R.drawable.logo_apple, White)
-}
 
 @Composable
 fun SnsAccountTab(
     title: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
-    items: List<SNSAccountTypes> = SNSAccountTypes.entries
+    items: List<SnsAccountType> = SnsAccountType.entries
 ) {
     Column(
         modifier = modifier,
@@ -138,9 +111,7 @@ private fun SnsButton(
             .clip(CircleShape)
             .background(backgroundColor)
             .size(44.dp)
-            .noRippleClickable {
-                onSocialClick()
-            },
+            .noRippleClickable(onSocialClick),
         contentAlignment = Alignment.Center
     ) {
         Image(
