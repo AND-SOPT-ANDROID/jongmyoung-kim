@@ -13,9 +13,9 @@ import androidx.core.view.WindowCompat
 
 private val ColorScheme = lightColorScheme(
     primary = WavveMain,
-    onPrimary = Color.White,
+    onPrimary = White,
     primaryContainer = Container,
-    onPrimaryContainer = Color.White,
+    onPrimaryContainer = White,
     surface = Background,
     onSurface = LightGray,
     background = Background,
@@ -33,6 +33,7 @@ fun ANDANDROIDTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

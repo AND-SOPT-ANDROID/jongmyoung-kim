@@ -1,4 +1,4 @@
-package org.sopt.and.presentation.main.mypage.components
+package org.sopt.and.presentation.mypage.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -21,18 +20,11 @@ import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.LightGray
 
-
-/**
- * My page service
- *
- * submenu 관련 컴포넌트, 추가 기능 구현 시 service list 수정 예정
- *
- * @param modifier
- */
 @Composable
 fun MyPageService(
     modifier: Modifier = Modifier
 ) {
+    // TODO: 추가 기능 구현 시 수정 예정
     val services = listOf(
         "구매 콘텐츠",
         "다운로드 콘텐츠",
@@ -52,7 +44,7 @@ fun MyPageService(
 }
 
 @Composable
-fun MyPageServiceItem(
+private fun MyPageServiceItem(
     title: String
 ) {
     Row(

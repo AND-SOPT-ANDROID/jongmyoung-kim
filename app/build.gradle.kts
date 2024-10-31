@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -34,6 +37,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    kotlin {
+        sourceSets.all {
+            languageSettings.enableLanguageFeature("ExplicitBackingFields")
+        }
+    }
     buildFeatures {
         compose = true
     }
@@ -56,4 +64,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // navigation
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.hilt.navigation.compose)
+
+    // hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
+
+    // coil3
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
 }
