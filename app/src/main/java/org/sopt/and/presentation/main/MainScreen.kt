@@ -125,7 +125,6 @@ fun MainNavigation(
                         }
                     }
                     navController.navigate(Route.Home, navOptions)
-                    Log.e("Routeeeeee22222", "${navController.currentDestination?.route}")
                     onLogInChange(true)
                     message?.let { showSnackbar(it) }
                 },
