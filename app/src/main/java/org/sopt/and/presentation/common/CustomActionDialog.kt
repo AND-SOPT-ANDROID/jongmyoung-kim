@@ -2,7 +2,6 @@ package org.sopt.and.presentation.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,61 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.Container
 import org.sopt.and.presentation.theme.WavveMain
 import org.sopt.and.presentation.theme.White
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CustomConfirmDialog(
-    @StringRes title: Int,
-    @StringRes description: Int,
-    @StringRes dismissText: Int,
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    BasicAlertDialog(
-        onDismissRequest = onDismissRequest
-    ) {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(4.dp))
-                .background(White)
-                .padding(vertical = 16.dp, horizontal = 24.dp)
-        ) {
-            Text(
-                modifier = Modifier.padding(bottom = 8.dp),
-                text = stringResource(title),
-                color = Container,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            Text(
-                modifier = Modifier.padding(bottom = 16.dp),
-                text = stringResource(description),
-                color = Container,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 8.dp)
-                    .noRippleClickable { onDismissRequest() },
-                text = stringResource(dismissText),
-                color = WavveMain,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.Bold
-                )
-            )
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,7 +71,7 @@ fun CustomActionDialog(
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
-                        .noRippleClickable { onDismissRequest() },
+                        .noRippleClickable(onDismissRequest),
                     text = stringResource(dismissText),
                     color = WavveMain,
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -129,7 +79,7 @@ fun CustomActionDialog(
                     )
                 )
                 Text(
-                    modifier = Modifier.noRippleClickable { onConfirmRequest() },
+                    modifier = Modifier.noRippleClickable(onConfirmRequest),
                     text = stringResource(confirmText),
                     color = WavveMain,
                     style = MaterialTheme.typography.bodyLarge.copy(
