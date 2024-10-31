@@ -44,7 +44,7 @@ fun SearchTagButton(
                 shape = RoundedCornerShape(24.dp),
             )
             .padding(vertical = 13.dp, horizontal = 16.dp)
-            .noRippleClickable { onButtonClick() }
+            .noRippleClickable(onButtonClick)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {

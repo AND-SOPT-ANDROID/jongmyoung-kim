@@ -34,9 +34,7 @@ fun MyPageTicket(
             .height(76.dp)
             .padding(horizontal = 12.dp)
             .padding(bottom = 8.dp)
-            .noRippleClickable {
-                // TODO: 클릭 이벤트 구현
-            },
+            .noRippleClickable({}),
         verticalArrangement = Arrangement.Center
     ) {
         Text(
