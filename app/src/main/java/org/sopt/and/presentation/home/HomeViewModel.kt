@@ -1,10 +1,10 @@
 package org.sopt.and.presentation.home
 
-import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.sopt.and.presentation.home.uistate.HomeUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -98,11 +98,3 @@ class HomeViewModel @Inject constructor(
         )
     }
 }
-
-@Immutable
-data class HomeUiState(
-    val isLoading: Boolean = false, // 추후 로딩 뷰 추가 시 사용
-    val banners: List<Pair<String, String>> = emptyList(),
-    val posters: List<Pair<String, List<String>>> = emptyList(),
-    val rankedPosters: Pair<String, List<String>> = Pair("", emptyList())
-)

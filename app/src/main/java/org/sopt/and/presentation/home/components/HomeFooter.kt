@@ -82,47 +82,7 @@ fun HomeFooter(
             )
         }
         Text(
-            text = stringResource(R.string.footer_corp),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_address),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_business_registration),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_mail_order_registration),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_mail_order_information),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_service_provider),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_customer_service_center),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_email_address),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_copyright),
+            text = stringResource(R.string.footer_contents),
             color = LightGray,
             style = MaterialTheme.typography.labelSmall
         )
