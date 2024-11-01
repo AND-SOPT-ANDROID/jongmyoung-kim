@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.main.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import org.sopt.and.R
 import org.sopt.and.presentation.main.MainBottomTab
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
@@ -39,28 +43,34 @@ import org.sopt.and.presentation.theme.AndAndroidTheme
 @Composable
 fun MainBottomBar(
     tabs: List<MainBottomTab>,
-    currentTab: MainBottomTab?,
     onTabSelected: (MainBottomTab) -> Unit,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     isFirstSubscriber: Boolean = true // server driven value for user who's first subscriber
 ) {
-    Column {
-        if (currentTab == MainBottomTab.HOME && isFirstSubscriber) { // only for user who's first subscriber
-            GuaranteeBanner(modifier = Modifier.height(48.dp))
-        }
-        Row(
-            modifier = modifier
-                .background(color = AndAndroidTheme.colors.gray600)
-                .fillMaxWidth()
-                .padding(vertical = 6.dp)
-                .height(42.dp)
-        ) {
-            tabs.forEach { tab ->
-                MainBottomBarItem(
-                    tab = tab,
-                    selected = tab == currentTab,
-                    onItemClick = { onTabSelected(tab) }
-                )
+    val currentDestination = navController.currentBackStackEntryAsState().value?.destination
+    val currentTab = MainBottomTab.entries.find {
+        currentDestination?.route == it.route::class.qualifiedName
+    }
+    AnimatedVisibility(currentTab in MainBottomTab.entries) {
+        Column {
+            if (currentTab == MainBottomTab.HOME && isFirstSubscriber) { // only for user who's first subscriber
+                GuaranteeBanner(modifier = Modifier.height(48.dp))
+            }
+            Row(
+                modifier = modifier
+                    .background(color = AndAndroidTheme.colors.gray600)
+                    .fillMaxWidth()
+                    .padding(vertical = 6.dp)
+                    .height(42.dp)
+            ) {
+                tabs.forEach { tab ->
+                    MainBottomBarItem(
+                        tab = tab,
+                        selected = tab == currentTab,
+                        onItemClick = { onTabSelected(tab) }
+                    )
+                }
             }
         }
     }
@@ -114,9 +124,11 @@ private fun GuaranteeBanner(
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-            .background(brush = Brush.horizontalGradient(
-                listOf(AndAndroidTheme.colors.gradientBlue, AndAndroidTheme.colors.gradientTeal)
-            )),
+            .background(
+                brush = Brush.horizontalGradient(
+                    listOf(AndAndroidTheme.colors.gradientBlue, AndAndroidTheme.colors.gradientTeal)
+                )
+            ),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -141,8 +153,8 @@ private fun MainBottomBarPreview() {
     ANDANDROIDTheme {
         MainBottomBar(
             tabs = MainBottomTab.entries,
-            currentTab = MainBottomTab.HOME,
-            onTabSelected = { }
+            onTabSelected = { },
+            navController = rememberNavController()
         )
     }
 }
