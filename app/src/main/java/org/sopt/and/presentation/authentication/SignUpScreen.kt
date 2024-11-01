@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,10 +41,8 @@ import org.sopt.and.presentation.authentication.sideeffect.SignUpSideEffect
 import org.sopt.and.presentation.common.CustomActionDialog
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Error
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SignUpScreen(
@@ -114,14 +111,15 @@ private fun SignUpScreenContent(
     val scrollState = rememberScrollState()
 
     Scaffold(
-        modifier.imePadding(),
+        modifier = modifier.imePadding(),
+        containerColor = AndAndroidTheme.colors.gray500,
         topBar = { SignUpTopBar(onCancelClick = onCancelClick) },
         bottomBar = {
             Box(
                 modifier = Modifier
                     .height(48.dp)
                     .fillMaxWidth()
-                    .background(if (isButtonEnabled) WavveMain else LightGray)
+                    .background(if (isButtonEnabled) AndAndroidTheme.colors.wavveMain else AndAndroidTheme.colors.gray100)
                     .noRippleClickable(
                         enabled = isButtonEnabled,
                         onClick = onSignUpClick
@@ -130,7 +128,7 @@ private fun SignUpScreenContent(
                 Text(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(R.string.wavve_sign_up),
-                    color = White
+                    color = AndAndroidTheme.colors.white
                 )
             }
         }
@@ -150,22 +148,22 @@ private fun SignUpScreenContent(
                     text = buildAnnotatedString {
                         append(stringResource(R.string.sign_up_greeting))
                         addStyle(
-                            style = SpanStyle(color = White),
+                            style = SpanStyle(color = AndAndroidTheme.colors.white),
                             start = 0,
                             end = 9
                         )
                         addStyle(
-                            style = SpanStyle(color = LightGray),
+                            style = SpanStyle(color = AndAndroidTheme.colors.gray100),
                             start = 9,
                             end = 12
                         )
                         addStyle(
-                            style = SpanStyle(color = White),
+                            style = SpanStyle(color = AndAndroidTheme.colors.white),
                             start = 13,
                             end = 24
                         )
                         addStyle(
-                            style = SpanStyle(color = LightGray),
+                            style = SpanStyle(color = AndAndroidTheme.colors.gray100),
                             start = 25,
                             end = 29
                         )
@@ -177,12 +175,14 @@ private fun SignUpScreenContent(
                     value = emailInput,
                     hint = stringResource(R.string.sign_up_email_hint),
                     onValueChange = onEmailChange,
-                    cursorBrush = SolidColor(White)
+                    cursorBrush = SolidColor(AndAndroidTheme.colors.white)
                 )
                 AlertText(
                     modifier = Modifier.padding(vertical = 10.dp),
                     value = stringResource(R.string.sign_up_email_noti),
-                    textColor = if (isEmailValid || emailInput.isEmpty()) LightGray else Error
+                    textColor = if (isEmailValid || emailInput.isEmpty()) {
+                        AndAndroidTheme.colors.gray100
+                    } else AndAndroidTheme.colors.error
                 )
                 AuthTextField(
                     value = passwordInput,
@@ -190,12 +190,14 @@ private fun SignUpScreenContent(
                     onValueChange = onPasswordChange,
                     isPassword = true,
                     visualTransformation = PasswordVisualTransformation(),
-                    cursorBrush = SolidColor(White)
+                    cursorBrush = SolidColor(AndAndroidTheme.colors.white)
                 )
                 AlertText(
                     modifier = Modifier.padding(vertical = 10.dp),
                     value = stringResource(R.string.sign_up_password_noti),
-                    textColor = if (isPasswordValid || passwordInput.isEmpty()) LightGray else Error
+                    textColor = if (isPasswordValid || passwordInput.isEmpty()) {
+                        AndAndroidTheme.colors.gray100
+                    } else AndAndroidTheme.colors.error
                 )
                 SnsAccountTab(
                     modifier = Modifier.padding(bottom = 96.dp),

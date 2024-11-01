@@ -21,9 +21,8 @@ import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Container
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,13 +40,13 @@ fun CustomConfirmDialog(
             modifier = modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
-                .background(White)
+                .background(AndAndroidTheme.colors.white)
                 .padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
                 text = stringResource(title),
-                color = Container,
+                color = AndAndroidTheme.colors.gray400,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold
                 )
@@ -55,7 +54,7 @@ fun CustomConfirmDialog(
             Text(
                 modifier = Modifier.padding(bottom = 16.dp),
                 text = stringResource(description),
-                color = Container,
+                color = AndAndroidTheme.colors.gray400,
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
@@ -64,7 +63,7 @@ fun CustomConfirmDialog(
                     .padding(end = 8.dp)
                     .noRippleClickable(onDismissRequest),
                 text = stringResource(dismissText),
-                color = WavveMain,
+                color = AndAndroidTheme.colors.wavveMain,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold
                 )

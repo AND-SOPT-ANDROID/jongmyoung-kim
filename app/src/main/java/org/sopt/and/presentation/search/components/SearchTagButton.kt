@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SearchTagButton(
@@ -40,7 +40,7 @@ fun SearchTagButton(
             .height(48.dp)
             .border(
                 width = 1.dp,
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 shape = RoundedCornerShape(24.dp),
             )
             .padding(vertical = 13.dp, horizontal = 16.dp)
@@ -51,14 +51,14 @@ fun SearchTagButton(
         Icon(
             painter = painterResource(iconResId),
             contentDescription = stringResource(descriptionResId),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
         Text(
             modifier = Modifier
                 .padding(start = 8.dp)
                 .weight(1f),
             text = stringResource(titleResId),
-            color = White,
+            color = AndAndroidTheme.colors.white,
             style = TextStyle(
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false,
@@ -68,7 +68,7 @@ fun SearchTagButton(
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_forward),
             contentDescription = stringResource(R.string.ic_forward),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
     }
 }

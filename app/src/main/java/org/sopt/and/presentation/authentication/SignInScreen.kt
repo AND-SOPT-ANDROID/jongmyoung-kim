@@ -40,10 +40,8 @@ import org.sopt.and.presentation.authentication.sideeffect.SignInSideEffect
 import org.sopt.and.presentation.common.CustomConfirmDialog
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Error
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SignInScreen(
@@ -130,7 +128,7 @@ private fun SignInScreenContent(
         if (showEmailError) {
             AlertText(
                 value = stringResource(R.string.sign_in_email_noti),
-                textColor = Error
+                textColor = AndAndroidTheme.colors.error
             )
         }
         AuthTextField(
@@ -153,7 +151,7 @@ private fun SignInScreenContent(
         if (showPasswordError) {
             AlertText(
                 value = stringResource(R.string.sign_in_password_noti),
-                textColor = Error
+                textColor = AndAndroidTheme.colors.error
             )
         }
         Button(
@@ -161,10 +159,10 @@ private fun SignInScreenContent(
                 .padding(top = 32.dp)
                 .height(48.dp),
             colors = ButtonColors(
-                containerColor = WavveMain,
-                contentColor = White,
-                disabledContainerColor = WavveMain,
-                disabledContentColor = White
+                containerColor = AndAndroidTheme.colors.wavveMain,
+                contentColor = AndAndroidTheme.colors.white,
+                disabledContainerColor = AndAndroidTheme.colors.wavveMain,
+                disabledContentColor = AndAndroidTheme.colors.white
             ),
             onClick = onSignInClick,
             shape = RoundedCornerShape(100.dp)
@@ -182,28 +180,28 @@ private fun SignInScreenContent(
         ) {
             Text(
                 text = stringResource(R.string.find_id),
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = stringResource(R.string.vertical_bar),
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = stringResource(R.string.reset_password),
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = stringResource(R.string.vertical_bar),
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 modifier = Modifier.noRippleClickable(onNavigateToSignUp),
                 text = stringResource(R.string.sign_up),
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = MaterialTheme.typography.labelSmall
             )
         }

@@ -29,7 +29,8 @@ import org.sopt.and.presentation.search.components.SearchPopularItem
 import org.sopt.and.presentation.search.components.SearchTagButton
 import org.sopt.and.presentation.search.components.SearchTextField
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ExtraDarkGray
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SearchScreen(
@@ -122,7 +123,7 @@ private fun SearchScreenContent(
                         )
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = ExtraDarkGray
+                            color = AndAndroidTheme.colors.gray300
                         )
                     }
                 }

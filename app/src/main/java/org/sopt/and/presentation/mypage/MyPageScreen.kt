@@ -40,10 +40,8 @@ import org.sopt.and.presentation.mypage.components.MyPageService
 import org.sopt.and.presentation.mypage.components.MyPageTicket
 import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Background
-import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun MyPageScreen(
@@ -84,7 +82,7 @@ private fun MyPageScreenContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(ExtraDarkGray)
+            .background(AndAndroidTheme.colors.gray300)
             .padding(top = 20.dp)
             .verticalScroll(scrollState)
     ) {
@@ -96,12 +94,12 @@ private fun MyPageScreenContent(
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
-                    .background(WavveMain)
+                    .background(AndAndroidTheme.colors.wavveMain)
             )
             Text(
                 modifier = Modifier.padding(start = 15.dp),
                 text = stringResource(R.string.sir, userEmail),
-                color = White,
+                color = AndAndroidTheme.colors.white,
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -111,7 +109,7 @@ private fun MyPageScreenContent(
                     .noRippleClickable({}),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_notification),
                 contentDescription = stringResource(R.string.ic_notification),
-                tint = White
+                tint = AndAndroidTheme.colors.white
             )
             Icon(
                 modifier = Modifier
@@ -119,7 +117,7 @@ private fun MyPageScreenContent(
                     .noRippleClickable({}),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_setting),
                 contentDescription = stringResource(R.string.ic_setting),
-                tint = White
+                tint = AndAndroidTheme.colors.white
             )
         }
         // 임시 로그아웃 버튼, 추후 수정 필요
@@ -128,7 +126,7 @@ private fun MyPageScreenContent(
                 .padding(start = 24.dp)
                 .noRippleClickable(onClickSignOut),
             text = stringResource(R.string.sign_out),
-            color = White,
+            color = AndAndroidTheme.colors.white,
             style = MaterialTheme.typography.bodyLarge
         )
         MyPageTicket(
@@ -137,14 +135,14 @@ private fun MyPageScreenContent(
         )
         HorizontalDivider(
             thickness = 1.dp,
-            color = Background
+            color = AndAndroidTheme.colors.gray500
         )
         MyPageTicket(
             description = stringResource(R.string.no_ticket)
         )
         Column(
             modifier = Modifier
-                .background(Background)
+                .background(AndAndroidTheme.colors.gray500)
                 .padding(horizontal = 12.dp)
         ) {
             MyPageOverview()

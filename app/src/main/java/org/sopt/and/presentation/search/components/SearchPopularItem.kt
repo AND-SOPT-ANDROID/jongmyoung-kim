@@ -16,7 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SearchPopularItem(
@@ -41,7 +42,7 @@ fun SearchPopularItem(
             )
             Text(
                 text = title,
-                color = White
+                color = AndAndroidTheme.colors.white
             )
         }
     }

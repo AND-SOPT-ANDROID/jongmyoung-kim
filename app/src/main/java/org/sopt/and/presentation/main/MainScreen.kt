@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.main
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -31,6 +30,8 @@ import org.sopt.and.presentation.mypage.MyPageScreen
 import org.sopt.and.presentation.navigation.Route
 import org.sopt.and.presentation.search.SearchScreen
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun MainScreen(
@@ -45,6 +46,7 @@ fun MainScreen(
 
     Scaffold(
         modifier = Modifier.navigationBarsPadding(),
+        containerColor = AndAndroidTheme.colors.gray500,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             AnimatedVisibility(logInState) {

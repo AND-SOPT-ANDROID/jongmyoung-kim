@@ -20,10 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Background
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
 
 @Composable
 fun CustomTabRow(
@@ -34,7 +31,7 @@ fun CustomTabRow(
 ) {
     Row(
         modifier = modifier
-            .background(Background)
+            .background(AndAndroidTheme.colors.gray500)
             .padding(top = 12.dp)
             .height(40.dp)
             .fillMaxWidth(),
@@ -56,13 +53,17 @@ fun CustomTabRow(
                 ) {
                     Text(
                         text = tab,
-                        color = if (selectedTabIndex == index) White else LightGray,
+                        color = if (selectedTabIndex == index) {
+                            AndAndroidTheme.colors.white
+                        } else AndAndroidTheme.colors.gray100,
                         style = MaterialTheme.typography.labelLarge
                     )
                     HorizontalDivider(
                         modifier = Modifier.width(70.dp),
                         thickness = 5.dp,
-                        color = if (selectedTabIndex == index) WavveMain else Color.Transparent
+                        color = if (selectedTabIndex == index) {
+                            AndAndroidTheme.colors.wavveMain
+                        } else Color.Transparent
                     )
                 }
             }

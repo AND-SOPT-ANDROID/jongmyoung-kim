@@ -15,7 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun HomeTopBar(
@@ -29,20 +30,20 @@ fun HomeTopBar(
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.logo_wavve),
             contentDescription = stringResource(R.string.logo_wavve),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
         Spacer(Modifier.weight(1f))
         Icon(
             modifier = Modifier.padding(end = 12.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_cast),
             contentDescription = stringResource(R.string.ic_cast),
-            tint = White
+            tint = AndAndroidTheme.colors.white
 
         )
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_live),
             contentDescription = stringResource(R.string.ic_live),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
     }
 }

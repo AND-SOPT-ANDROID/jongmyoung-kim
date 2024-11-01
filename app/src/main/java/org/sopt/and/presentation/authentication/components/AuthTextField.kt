@@ -30,10 +30,8 @@ import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun AuthTextField(
@@ -45,14 +43,14 @@ fun AuthTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions(),
     shape: Shape = RoundedCornerShape(8.dp),
-    cursorBrush: Brush = SolidColor(WavveMain)
+    cursorBrush: Brush = SolidColor(AndAndroidTheme.colors.wavveMain)
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
             .clip(shape)
-            .background(ExtraDarkGray)
+            .background(AndAndroidTheme.colors.gray300)
             .fillMaxWidth()
             .padding(16.dp),
         contentAlignment = Alignment.CenterStart
@@ -72,7 +70,7 @@ fun AuthTextField(
             keyboardActions = keyboardActions,
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = White
+                color = AndAndroidTheme.colors.white
             ),
             cursorBrush = cursorBrush,
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else visualTransformation,
@@ -81,7 +79,7 @@ fun AuthTextField(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = hint,
-                    color = LightGray,
+                    color = AndAndroidTheme.colors.gray100,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         platformStyle = PlatformTextStyle(
                             includeFontPadding = false
@@ -103,7 +101,7 @@ fun AuthTextField(
                     ),
                 text = iconText,
                 style = MaterialTheme.typography.bodyMedium,
-                color = White
+                color = AndAndroidTheme.colors.white
             )
         }
     }

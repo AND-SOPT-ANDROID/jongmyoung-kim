@@ -33,11 +33,8 @@ import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.main.MainBottomTab
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.GradientBlue
-import org.sopt.and.presentation.theme.GradientTeal
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.NavContainer
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun MainBottomBar(
@@ -53,7 +50,7 @@ fun MainBottomBar(
         }
         Row(
             modifier = modifier
-                .background(color = NavContainer)
+                .background(color = AndAndroidTheme.colors.gray600)
                 .fillMaxWidth()
                 .padding(vertical = 6.dp)
                 .height(42.dp)
@@ -76,7 +73,7 @@ private fun RowScope.MainBottomBarItem(
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val itemColor = if (selected) White else LightGray
+    val itemColor = if (selected) AndAndroidTheme.colors.white else AndAndroidTheme.colors.gray100
     val isMyPage = tab == MainBottomTab.MY_PAGE
 
     Column(
@@ -117,7 +114,9 @@ private fun GuaranteeBanner(
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-            .background(brush = Brush.horizontalGradient(listOf(GradientBlue, GradientTeal))),
+            .background(brush = Brush.horizontalGradient(
+                listOf(AndAndroidTheme.colors.gradientBlue, AndAndroidTheme.colors.gradientTeal)
+            )),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -131,7 +130,7 @@ private fun GuaranteeBanner(
         )
         Text(
             text = stringResource(R.string.home_first_purchase_guarantee),
-            color = White
+            color = AndAndroidTheme.colors.white
         )
     }
 }

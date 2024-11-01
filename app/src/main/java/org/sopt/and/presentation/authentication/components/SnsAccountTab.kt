@@ -29,9 +29,8 @@ import org.sopt.and.R
 import org.sopt.and.presentation.authentication.SnsAccountType
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.DarkGray
-import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.LightGray
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SnsAccountTab(
@@ -52,17 +51,17 @@ fun SnsAccountTab(
         ) {
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = ExtraDarkGray
+                color = AndAndroidTheme.colors.gray300
             )
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 text = title,
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = textStyle
             )
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = ExtraDarkGray
+                color = AndAndroidTheme.colors.gray300
             )
         }
         Row(
@@ -87,12 +86,12 @@ fun SnsAccountTab(
             Text(
                 modifier = Modifier.padding(horizontal = 4.dp),
                 text = stringResource(R.string.sns_dot),
-                color = DarkGray,
+                color = AndAndroidTheme.colors.gray200,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = stringResource(R.string.sns_notification),
-                color = DarkGray,
+                color = AndAndroidTheme.colors.gray200,
                 style = MaterialTheme.typography.labelSmall,
             )
         }

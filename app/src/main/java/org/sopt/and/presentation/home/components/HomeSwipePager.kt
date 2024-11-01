@@ -27,10 +27,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.NavContainer
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun HomeSwipePager(
@@ -64,7 +62,11 @@ fun HomeSwipePager(
             Box(
                 modifier = modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .border(width = 1.dp, color = ExtraDarkGray, shape = RoundedCornerShape(8.dp))
+                    .border(
+                        width = 1.dp,
+                        color = AndAndroidTheme.colors.gray300,
+                        shape = RoundedCornerShape(8.dp)
+                    )
             ) {
                 AsyncImage(
                     model = banners[page % banners.size].first,
@@ -95,18 +97,18 @@ private fun PageCountChip(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(NavContainer)
+            .background(AndAndroidTheme.colors.gray600)
             .padding(vertical = 3.dp, horizontal = 10.dp)
     ) {
         Text(
             text = buildAnnotatedString {
                 withStyle(
-                    style = SpanStyle(color = White)
+                    style = SpanStyle(color = AndAndroidTheme.colors.white)
                 ) {
                     append("${currentPage + 1}")
                 }
                 withStyle(
-                    style = SpanStyle(color = LightGray)
+                    style = SpanStyle(color = AndAndroidTheme.colors.gray100)
                 ) {
                     append(stringResource(R.string.vertical_bar))
                     append("$totalPage")

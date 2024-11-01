@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun MyPageTicket(
@@ -39,7 +39,7 @@ fun MyPageTicket(
     ) {
         Text(
             text = description,
-            color = LightGray,
+            color = AndAndroidTheme.colors.gray100,
             style = MaterialTheme.typography.bodyLarge
         )
         Row(
@@ -47,13 +47,13 @@ fun MyPageTicket(
         ) {
             Text(
                 text = stringResource(R.string.purchase),
-                color = White,
+                color = AndAndroidTheme.colors.white,
                 style = MaterialTheme.typography.bodyLarge
             )
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_forward),
                 contentDescription = stringResource(R.string.ic_forward),
-                tint = White
+                tint = AndAndroidTheme.colors.white
             )
         }
     }
