@@ -30,7 +30,7 @@ fun SignUpTopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 15.dp)
             .height(56.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -59,7 +59,7 @@ fun SignInTopBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
-            .height(56.dp),
+            .height(52.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(

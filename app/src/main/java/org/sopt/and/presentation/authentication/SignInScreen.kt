@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.authentication
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -107,11 +109,17 @@ private fun SignInScreenContent(
 ) {
     val scrollState = rememberScrollState()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val textFieldModifier = Modifier
+        .height(52.dp)
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(5.dp))
+        .background(AndAndroidTheme.colors.gray400)
+        .padding(horizontal = 16.dp)
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 20.dp)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -119,11 +127,10 @@ private fun SignInScreenContent(
         AuthTextField(
             modifier = Modifier
                 .padding(top = 48.dp)
-                .height(56.dp),
+                .then(textFieldModifier),
             value = emailInput,
             hint = stringResource(R.string.sign_in_email_hint),
-            onValueChange = onEmailChange,
-            shape = RoundedCornerShape(5.dp)
+            onValueChange = onEmailChange
         )
         if (showEmailError) {
             AlertText(
@@ -134,19 +141,18 @@ private fun SignInScreenContent(
         AuthTextField(
             modifier = Modifier
                 .padding(top = 4.dp)
-                .height(56.dp),
+                .then(textFieldModifier),
             value = passwordInput,
             hint = stringResource(R.string.sign_in_password_hint),
             onValueChange = onPasswordChange,
             isPassword = true,
+            visualTransformation = PasswordVisualTransformation(),
             keyboardActions = KeyboardActions(
                 onDone = {
                     onSignInClick()
                     keyboardController?.hide()
                 }
-            ),
-            shape = RoundedCornerShape(5.dp),
-            visualTransformation = PasswordVisualTransformation()
+            )
         )
         if (showPasswordError) {
             AlertText(

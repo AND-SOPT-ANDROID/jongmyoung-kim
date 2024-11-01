@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -109,6 +111,12 @@ private fun SignUpScreenContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
+    val textFieldModifier = Modifier
+        .fillMaxWidth()
+        .height(48.dp)
+        .clip(RoundedCornerShape(5.dp))
+        .background(AndAndroidTheme.colors.gray300)
+        .padding(horizontal = 15.dp)
 
     Scaffold(
         modifier = modifier.imePadding(),
@@ -171,7 +179,9 @@ private fun SignUpScreenContent(
                     style = MaterialTheme.typography.titleLarge
                 )
                 AuthTextField(
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .then(textFieldModifier),
                     value = emailInput,
                     hint = stringResource(R.string.sign_up_email_hint),
                     onValueChange = onEmailChange,
@@ -185,6 +195,7 @@ private fun SignUpScreenContent(
                     } else AndAndroidTheme.colors.error
                 )
                 AuthTextField(
+                    modifier = textFieldModifier,
                     value = passwordInput,
                     hint = stringResource(R.string.sign_up_password_hint),
                     onValueChange = onPasswordChange,

@@ -34,7 +34,7 @@ fun HomeTopBar(
         )
         Spacer(Modifier.weight(1f))
         Icon(
-            modifier = Modifier.padding(end = 12.dp),
+            modifier = Modifier.padding(end = 16.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_cast),
             contentDescription = stringResource(R.string.ic_cast),
             tint = AndAndroidTheme.colors.white
