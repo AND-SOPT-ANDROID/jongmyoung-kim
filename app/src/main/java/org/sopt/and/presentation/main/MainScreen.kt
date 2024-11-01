@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.main
 
+import android.util.Log
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -23,6 +24,7 @@ import org.sopt.and.presentation.authentication.SignUpScreen
 import org.sopt.and.presentation.home.HomeScreen
 import org.sopt.and.presentation.main.components.MainBottomBar
 import org.sopt.and.presentation.mypage.MyPageScreen
+import org.sopt.and.presentation.navigation.MainTabRoute
 import org.sopt.and.presentation.navigation.Route
 import org.sopt.and.presentation.search.SearchScreen
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
@@ -34,7 +36,7 @@ fun MainScreen(
     navController: NavHostController,
     isLoggedIn: Boolean
 ) {
-    val startDestination = if (isLoggedIn) MainBottomTab.HOME.route else Route.SignIn
+    val startDestination = if (isLoggedIn) MainTabRoute.Home else Route.SignIn
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
@@ -47,8 +49,8 @@ fun MainScreen(
                 tabs = MainBottomTab.entries,
                 onTabSelected = { tab ->
                     navController.navigate(tab.route) {
-                        navController.graph.startDestinationRoute?.let {
-                            popUpTo(it) { saveState = true }
+                        popUpTo(0) {
+                            saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
@@ -87,17 +89,17 @@ fun MainNavigation(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable<Route.Home> {
+        composable<MainTabRoute.Home> {
             HomeScreen()
         }
-        composable<Route.Search> {
+        composable<MainTabRoute.Search> {
             SearchScreen()
         }
-        composable<Route.MyPage> {
+        composable<MainTabRoute.MyPage> {
             MyPageScreen(
                 onNavigateToSignIn = { message ->
                     val navOptions = navOptions {
-                        popUpTo(Route.MyPage) {
+                        popUpTo(0) {
                             inclusive = true
                         }
                     }
@@ -114,7 +116,7 @@ fun MainNavigation(
                             inclusive = true
                         }
                     }
-                    navController.navigate(Route.Home, navOptions)
+                    navController.navigate(MainTabRoute.Home, navOptions)
                     message?.let { showSnackbar(it) }
                 },
                 onNavigateToSignUp = { navController.navigate(Route.SignUp) },
@@ -123,7 +125,7 @@ fun MainNavigation(
         composable<Route.SignUp> {
             SignUpScreen(
                 onNavigateToSignIn = { message ->
-                    navController.popBackStack()
+                    navController.navigateUp()
                     message?.let { showSnackbar(it) }
                 }
             )
