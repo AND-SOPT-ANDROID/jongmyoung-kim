@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SignUpTopBar(
@@ -29,22 +30,22 @@ fun SignUpTopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 15.dp)
             .height(56.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = stringResource(R.string.sign_up),
-            color = White
+            color = AndAndroidTheme.colors.white
         )
         Icon(
             modifier = Modifier
                 .size(36.dp)
                 .align(Alignment.CenterEnd)
-                .noRippleClickable { onCancelClick() },
+                .noRippleClickable(onCancelClick),
             imageVector = ImageVector.vectorResource(R.drawable.ic_close),
             contentDescription = stringResource(R.string.ic_close),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
     }
 }
@@ -58,26 +59,23 @@ fun SignInTopBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
-            .height(56.dp),
+            .height(52.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier
                 .size(36.dp)
                 .align(Alignment.CenterStart)
-                .noRippleClickable {
-                    onBackClick()
-                },
+                .noRippleClickable(onBackClick),
             imageVector = ImageVector.vectorResource(R.drawable.ic_back),
             contentDescription = stringResource(R.string.ic_back),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
         Icon(
-            modifier = Modifier
-                .align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
             imageVector = ImageVector.vectorResource(R.drawable.logo_wavve),
             contentDescription = stringResource(R.string.logo_wavve),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
     }
 }
@@ -103,20 +101,17 @@ fun WelcomeTopBar(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier
-                .align(Alignment.CenterStart),
+            modifier = Modifier.align(Alignment.CenterStart),
             imageVector = ImageVector.vectorResource(R.drawable.logo_wavve),
             contentDescription = stringResource(R.string.logo_wavve),
-            tint = White
+            tint = AndAndroidTheme.colors.white
         )
         Text(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .noRippleClickable {
-                    onNavigateToLogin()
-                },
+                .noRippleClickable(onNavigateToLogin),
             text = stringResource(R.string.sign_in),
-            color = White
+            color = AndAndroidTheme.colors.white
         )
     }
 }

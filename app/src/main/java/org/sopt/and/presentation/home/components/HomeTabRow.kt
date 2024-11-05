@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.presentation.home.HomeTab
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Background
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun HomeTabRow(
@@ -23,7 +23,7 @@ fun HomeTabRow(
 ) {
     LazyRow(
         modifier = modifier
-            .background(Background)
+            .background(AndAndroidTheme.colors.gray500)
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -39,7 +39,7 @@ fun HomeTabRow(
                         end = if (index == HomeTab.entries.lastIndex) 12.dp else 0.dp
                     ),
                 text = stringResource(tab.title),
-                color = White
+                color = AndAndroidTheme.colors.white
             )
         }
     }

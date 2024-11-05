@@ -3,34 +3,40 @@ package org.sopt.and.presentation.search
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.sopt.and.R
-import org.sopt.and.presentation.common.CommonTabRow
+import org.sopt.and.presentation.common.CustomTabRow
 import org.sopt.and.presentation.search.components.SearchPopularItem
 import org.sopt.and.presentation.search.components.SearchTagButton
 import org.sopt.and.presentation.search.components.SearchTextField
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ExtraDarkGray
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SearchScreenContent(
         popularSeries = uiState.popularSeriesPosters,
@@ -41,7 +47,7 @@ fun SearchScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 private fun SearchScreenContent(
     popularSeries: List<Pair<String, String>>,
@@ -53,6 +59,18 @@ private fun SearchScreenContent(
 ) {
     var tab by remember { mutableStateOf(0) }
     val commonModifier = Modifier.padding(horizontal = 12.dp)
+    val focusManager = LocalFocusManager.current
+    val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(lazyListState) {
+        snapshotFlow {
+            lazyListState.isScrollInProgress
+        }.collect { isScrolling ->
+            if (isScrolling) {
+                focusManager.clearFocus()
+            }
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxWidth()
@@ -63,7 +81,8 @@ private fun SearchScreenContent(
             modifier = commonModifier.padding(bottom = 8.dp)
         )
         LazyColumn(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            state = lazyListState
         ) {
             item {
                 Row(
@@ -85,7 +104,7 @@ private fun SearchScreenContent(
                 }
             }
             stickyHeader {
-                CommonTabRow(
+                CustomTabRow(
                     tabTitles = listOf("인기 시리즈", "인기 영화"),
                     selectedTabIndex = tab,
                     onTabSelected = {
@@ -104,7 +123,7 @@ private fun SearchScreenContent(
                         )
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = ExtraDarkGray
+                            color = AndAndroidTheme.colors.gray300
                         )
                     }
                 }

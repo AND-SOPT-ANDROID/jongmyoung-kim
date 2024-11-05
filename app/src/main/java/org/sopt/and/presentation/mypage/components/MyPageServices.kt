@@ -18,7 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.LightGray
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun MyPageService(
@@ -57,12 +58,12 @@ private fun MyPageServiceItem(
         Text(
             text = title,
             style = MaterialTheme.typography.bodyMedium,
-            color = LightGray
+            color = AndAndroidTheme.colors.gray100
         )
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_forward),
             contentDescription = stringResource(R.string.ic_forward),
-            tint = LightGray
+            tint = AndAndroidTheme.colors.gray100
         )
     }
 }

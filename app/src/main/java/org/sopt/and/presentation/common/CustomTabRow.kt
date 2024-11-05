@@ -8,23 +8,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Background
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
 
 @Composable
-fun CommonTabRow(
+fun CustomTabRow(
     tabTitles: List<String>,
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
@@ -32,7 +31,8 @@ fun CommonTabRow(
 ) {
     Row(
         modifier = modifier
-            .background(Background)
+            .background(AndAndroidTheme.colors.gray500)
+            .padding(top = 12.dp)
             .height(40.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -42,24 +42,29 @@ fun CommonTabRow(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .noRippleClickable { onTabSelected(index) },
+                    .noRippleClickable(
+                        onClick = { onTabSelected(index) }
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
-                    modifier = Modifier.padding(horizontal = 60.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = tab,
-                        color = if (selectedTabIndex == index) White else LightGray,
+                        color = if (selectedTabIndex == index) {
+                            AndAndroidTheme.colors.white
+                        } else AndAndroidTheme.colors.gray100,
                         style = MaterialTheme.typography.labelLarge
                     )
-                    if (selectedTabIndex == index) {
-                        HorizontalDivider(
-                            thickness = 5.dp,
-                            color = WavveMain
-                        )
-                    }
+                    HorizontalDivider(
+                        modifier = Modifier.width(70.dp),
+                        thickness = 5.dp,
+                        color = if (selectedTabIndex == index) {
+                            AndAndroidTheme.colors.wavveMain
+                        } else Color.Transparent
+                    )
                 }
             }
         }
@@ -72,7 +77,7 @@ fun CommonTabRow(
 private fun CustomTabRowPreview() {
     ANDANDROIDTheme {
         Column {
-            CommonTabRow(
+            CustomTabRow(
                 tabTitles = listOf("인기 시리즈", "인기 영화"),
                 selectedTabIndex = 1,
                 onTabSelected = {}

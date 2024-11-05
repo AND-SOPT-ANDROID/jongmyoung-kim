@@ -26,29 +26,20 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Result<Unit> {
-        return try {
+        return runCatching {
             userDataSource.setRemoteUserInfo(email, password)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 
     override fun signOut(): Result<Unit> {
-        return try {
+        return runCatching {
             userDataSource.clearUserInfo()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 
     override suspend fun getUserEmail(): Result<String> {
-        return try {
-            val userEmail = userDataSource.getUserInfo().first
-            Result.success(userEmail)
-        } catch (e: Exception) {
-            Result.failure(e)
+        return runCatching {
+            userDataSource.getUserInfo().first
         }
     }
 }

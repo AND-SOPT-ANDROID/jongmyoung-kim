@@ -19,8 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.LightGray
+import org.sopt.and.presentation.theme.AndAndroidTheme
+import org.sopt.and.presentation.theme.Gray100
 import org.sopt.and.presentation.theme.White
+
 
 @Composable
 fun MyPageOverview(
@@ -60,7 +62,7 @@ private fun MyPageContentsItem(
         Text(
             modifier = Modifier.padding(top = 12.dp),
             text = title,
-            color = White,
+            color = AndAndroidTheme.colors.white,
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight(800)
@@ -72,7 +74,7 @@ private fun MyPageContentsItem(
                 .align(Alignment.CenterHorizontally),
             imageVector = ImageVector.vectorResource(R.drawable.ic_alert),
             contentDescription = stringResource(R.string.ic_alert),
-            tint = LightGray
+            tint = AndAndroidTheme.colors.gray100
         )
         Text(
             modifier = Modifier
@@ -80,7 +82,7 @@ private fun MyPageContentsItem(
                 .padding(bottom = 24.dp)
                 .align(Alignment.CenterHorizontally),
             text = description,
-            color = LightGray
+            color = AndAndroidTheme.colors.gray100
         )
     }
 }

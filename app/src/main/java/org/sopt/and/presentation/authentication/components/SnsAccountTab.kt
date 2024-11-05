@@ -26,46 +26,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
+import org.sopt.and.presentation.authentication.SnsAccountType
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.DarkGray
-import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.Facebook
-import org.sopt.and.presentation.theme.Kakao
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.Naver
-import org.sopt.and.presentation.theme.TWorld
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
 
-
-/**
- * SNS account types
- *
- * 추후 패키지 분리 예정
- *
- * @property type
- * @property logo
- * @property logoColor
- * @constructor Create empty SNS account types
- */
-enum class SNSAccountTypes(
-    val type: String,
-    @DrawableRes val logo: Int,
-    val logoColor: Color
-) {
-    KAKAO("kakao", R.drawable.logo_kakao, Kakao),
-    TWORLD("tworld", R.drawable.logo_tworld, TWorld),
-    NAVER("naver", R.drawable.logo_naver, Naver),
-    FACEBOOK("facebook", R.drawable.logo_facebook, Facebook),
-    APPLE("apple", R.drawable.logo_apple, White)
-}
 
 @Composable
 fun SnsAccountTab(
     title: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
-    items: List<SNSAccountTypes> = SNSAccountTypes.entries
+    items: List<SnsAccountType> = SnsAccountType.entries
 ) {
     Column(
         modifier = modifier,
@@ -79,17 +51,17 @@ fun SnsAccountTab(
         ) {
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = ExtraDarkGray
+                color = AndAndroidTheme.colors.gray300
             )
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 text = title,
-                color = LightGray,
+                color = AndAndroidTheme.colors.gray100,
                 style = textStyle
             )
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = ExtraDarkGray
+                color = AndAndroidTheme.colors.gray300
             )
         }
         Row(
@@ -114,12 +86,12 @@ fun SnsAccountTab(
             Text(
                 modifier = Modifier.padding(horizontal = 4.dp),
                 text = stringResource(R.string.sns_dot),
-                color = DarkGray,
+                color = AndAndroidTheme.colors.gray200,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = stringResource(R.string.sns_notification),
-                color = DarkGray,
+                color = AndAndroidTheme.colors.gray200,
                 style = MaterialTheme.typography.labelSmall,
             )
         }
@@ -138,9 +110,7 @@ private fun SnsButton(
             .clip(CircleShape)
             .background(backgroundColor)
             .size(44.dp)
-            .noRippleClickable {
-                onSocialClick()
-            },
+            .noRippleClickable(onSocialClick),
         contentAlignment = Alignment.Center
     ) {
         Image(

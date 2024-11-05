@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.authentication
 
-import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,8 +9,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.usecase.SignUpUseCase
-import org.sopt.and.presentation.authentication.SignUpViewModel.Validator.emailRegex
-import org.sopt.and.presentation.authentication.SignUpViewModel.Validator.passwordRegex
+import org.sopt.and.presentation.authentication.sideeffect.SignUpSideEffect
+import org.sopt.and.presentation.authentication.uistate.SignUpUiState
 import org.sopt.and.presentation.util.Constants.Companion.MAX_EMAIL
 import org.sopt.and.presentation.util.Constants.Companion.MAX_PASSWORD
 import org.sopt.and.presentation.util.Constants.Companion.MIN_EMAIL
@@ -72,26 +71,10 @@ class SignUpViewModel @Inject constructor(
     private fun isPasswordValid(password: String) =
         passwordRegex.matches(password) && password.length >= MIN_PASSWORD
 
-    object Validator {
-        val emailRegex = "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$".toRegex()
-        val passwordRegex =
+    companion object Validator {
+        private val emailRegex = "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$".toRegex()
+        private val passwordRegex =
             ("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])|(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#\$%^&*])|" +
                     "(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*])|(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%^&*]).{8,20}$").toRegex()
     }
-}
-
-@Immutable
-data class SignUpUiState(
-    val emailInput: String = "",
-    val passwordInput: String = "",
-    val isEmailValid: Boolean = false,
-    val isPasswordValid: Boolean = false,
-    val isDialogShown: Boolean = false,
-    val isButtonEnabled: Boolean = false
-)
-
-sealed class SignUpSideEffect {
-    data object NavigateToSignIn : SignUpSideEffect()
-    data object NavigateBackToSignIn : SignUpSideEffect()
-    class Toast(val message: String) : SignUpSideEffect()
 }

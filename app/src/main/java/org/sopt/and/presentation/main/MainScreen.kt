@@ -1,19 +1,16 @@
 package org.sopt.and.presentation.main
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -27,42 +24,40 @@ import org.sopt.and.presentation.authentication.SignUpScreen
 import org.sopt.and.presentation.home.HomeScreen
 import org.sopt.and.presentation.main.components.MainBottomBar
 import org.sopt.and.presentation.mypage.MyPageScreen
+import org.sopt.and.presentation.navigation.MainTabRoute
 import org.sopt.and.presentation.navigation.Route
 import org.sopt.and.presentation.search.SearchScreen
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun MainScreen(
     navController: NavHostController,
     isLoggedIn: Boolean
 ) {
-    var currentTab by remember { mutableStateOf(MainBottomTab.HOME) }
-    val startDestination = if (isLoggedIn) MainBottomTab.HOME.route else Route.SignIn
+    val startDestination = if (isLoggedIn) MainTabRoute.Home else Route.SignIn
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    var logInState by remember { mutableStateOf(isLoggedIn) }
 
     Scaffold(
-        modifier = Modifier,
+        modifier = Modifier.navigationBarsPadding(),
+        containerColor = AndAndroidTheme.colors.gray500,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            AnimatedVisibility(logInState) {
-                MainBottomBar(
-                    tabs = MainBottomTab.entries,
-                    currentTab = currentTab,
-                    onTabSelected = { tab ->
-                        currentTab = tab
-
-                        navController.navigate(tab.route) {
-                            navController.graph.startDestinationRoute?.let {
-                                popUpTo(it) { saveState = true }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+            MainBottomBar(
+                tabs = MainBottomTab.entries,
+                onTabSelected = { tab ->
+                    navController.navigate(tab.route) {
+                        popUpTo(0) {
+                            saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                )
-            }
+                },
+                navController = navController
+            )
         }
     ) { innerPadding ->
         MainNavigation(
@@ -74,7 +69,6 @@ fun MainScreen(
                     snackbarHostState.showSnackbar(message)
                 }
             },
-            onLogInChange = { logInState = it }
         )
     }
 }
@@ -84,7 +78,6 @@ fun MainNavigation(
     navController: NavHostController,
     startDestination: Any,
     showSnackbar: (String) -> Unit,
-    onLogInChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -96,22 +89,21 @@ fun MainNavigation(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable<Route.Home> {
+        composable<MainTabRoute.Home> {
             HomeScreen()
         }
-        composable<Route.Search> {
+        composable<MainTabRoute.Search> {
             SearchScreen()
         }
-        composable<Route.MyPage> {
+        composable<MainTabRoute.MyPage> {
             MyPageScreen(
                 onNavigateToSignIn = { message ->
                     val navOptions = navOptions {
-                        popUpTo(Route.MyPage) {
+                        popUpTo(0) {
                             inclusive = true
                         }
                     }
                     navController.navigate(Route.SignIn, navOptions)
-                    onLogInChange(false)
                     message?.let { showSnackbar(it) }
                 }
             )
@@ -124,9 +116,7 @@ fun MainNavigation(
                             inclusive = true
                         }
                     }
-                    navController.navigate(Route.Home, navOptions)
-                    Log.e("Routeeeeee22222", "${navController.currentDestination?.route}")
-                    onLogInChange(true)
+                    navController.navigate(MainTabRoute.Home, navOptions)
                     message?.let { showSnackbar(it) }
                 },
                 onNavigateToSignUp = { navController.navigate(Route.SignUp) },
@@ -135,7 +125,7 @@ fun MainNavigation(
         composable<Route.SignUp> {
             SignUpScreen(
                 onNavigateToSignIn = { message ->
-                    navController.popBackStack()
+                    navController.navigateUp()
                     message?.let { showSnackbar(it) }
                 }
             )

@@ -3,25 +3,24 @@ package org.sopt.and.presentation.authentication
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -33,25 +32,26 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
 import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.authentication.components.AuthTextField
 import org.sopt.and.presentation.authentication.components.SignUpTopBar
 import org.sopt.and.presentation.authentication.components.SnsAccountTab
+import org.sopt.and.presentation.authentication.sideeffect.SignUpSideEffect
 import org.sopt.and.presentation.common.CustomActionDialog
+import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.Error
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SignUpScreen(
     onNavigateToSignIn: (String?) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val signUpMessage = stringResource(R.string.sign_up_success)
@@ -64,9 +64,8 @@ fun SignUpScreen(
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.sideEffect.collect { sideEffect ->
                 when (sideEffect) {
-                    is SignUpSideEffect.Toast -> {
+                    is SignUpSideEffect.Toast ->
                         Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-                    }
                     is SignUpSideEffect.NavigateToSignIn -> onNavigateToSignIn(signUpMessage)
                     is SignUpSideEffect.NavigateBackToSignIn -> onNavigateToSignIn(null)
                 }
@@ -88,10 +87,10 @@ fun SignUpScreen(
     SignUpScreenContent(
         emailInput = uiState.emailInput,
         isEmailValid = uiState.isEmailValid,
-        onEmailChange = { viewModel.updateEmailInput(it) },
+        onEmailChange = viewModel::updateEmailInput,
         passwordInput = uiState.passwordInput,
         isPasswordValid = uiState.isPasswordValid,
-        onPasswordChange = { viewModel.updatePasswordInput(it) },
+        onPasswordChange = viewModel::updatePasswordInput,
         onCancelClick = { viewModel.updateDialogVisibility(true) },
         onSignUpClick = viewModel::onSignUpClicked,
         isButtonEnabled = uiState.isButtonEnabled
@@ -112,27 +111,32 @@ private fun SignUpScreenContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
+    val textFieldModifier = Modifier
+        .fillMaxWidth()
+        .height(48.dp)
+        .clip(RoundedCornerShape(5.dp))
+        .background(AndAndroidTheme.colors.gray300)
+        .padding(horizontal = 15.dp)
 
     Scaffold(
+        modifier = modifier.imePadding(),
+        containerColor = AndAndroidTheme.colors.gray500,
         topBar = { SignUpTopBar(onCancelClick = onCancelClick) },
         bottomBar = {
             Box(
                 modifier = Modifier
                     .height(48.dp)
                     .fillMaxWidth()
-                    .background(if (isButtonEnabled) WavveMain else LightGray)
-                    .clickable(
+                    .background(if (isButtonEnabled) AndAndroidTheme.colors.wavveMain else AndAndroidTheme.colors.gray100)
+                    .noRippleClickable(
                         enabled = isButtonEnabled,
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ) {
-                        onSignUpClick()
-                    }
+                        onClick = onSignUpClick
+                    )
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(R.string.wavve_sign_up),
-                    color = White
+                    color = AndAndroidTheme.colors.white
                 )
             }
         }
@@ -152,22 +156,22 @@ private fun SignUpScreenContent(
                     text = buildAnnotatedString {
                         append(stringResource(R.string.sign_up_greeting))
                         addStyle(
-                            style = SpanStyle(color = White),
+                            style = SpanStyle(color = AndAndroidTheme.colors.white),
                             start = 0,
                             end = 9
                         )
                         addStyle(
-                            style = SpanStyle(color = LightGray),
+                            style = SpanStyle(color = AndAndroidTheme.colors.gray100),
                             start = 9,
                             end = 12
                         )
                         addStyle(
-                            style = SpanStyle(color = White),
+                            style = SpanStyle(color = AndAndroidTheme.colors.white),
                             start = 13,
                             end = 24
                         )
                         addStyle(
-                            style = SpanStyle(color = LightGray),
+                            style = SpanStyle(color = AndAndroidTheme.colors.gray100),
                             start = 25,
                             end = 29
                         )
@@ -175,29 +179,36 @@ private fun SignUpScreenContent(
                     style = MaterialTheme.typography.titleLarge
                 )
                 AuthTextField(
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .then(textFieldModifier),
                     value = emailInput,
                     hint = stringResource(R.string.sign_up_email_hint),
-                    onValueChange = { onEmailChange(it) },
-                    cursorBrush = SolidColor(White)
+                    onValueChange = onEmailChange,
+                    cursorBrush = SolidColor(AndAndroidTheme.colors.white)
                 )
                 AlertText(
                     modifier = Modifier.padding(vertical = 10.dp),
                     value = stringResource(R.string.sign_up_email_noti),
-                    textColor = if (isEmailValid || emailInput.isEmpty()) LightGray else Error
+                    textColor = if (isEmailValid || emailInput.isEmpty()) {
+                        AndAndroidTheme.colors.gray100
+                    } else AndAndroidTheme.colors.error
                 )
                 AuthTextField(
+                    modifier = textFieldModifier,
                     value = passwordInput,
                     hint = stringResource(R.string.sign_up_password_hint),
-                    onValueChange = { onPasswordChange(it) },
+                    onValueChange = onPasswordChange,
                     isPassword = true,
                     visualTransformation = PasswordVisualTransformation(),
-                    cursorBrush = SolidColor(White)
+                    cursorBrush = SolidColor(AndAndroidTheme.colors.white)
                 )
                 AlertText(
                     modifier = Modifier.padding(vertical = 10.dp),
                     value = stringResource(R.string.sign_up_password_noti),
-                    textColor = if (isPasswordValid || passwordInput.isEmpty()) LightGray else Error
+                    textColor = if (isPasswordValid || passwordInput.isEmpty()) {
+                        AndAndroidTheme.colors.gray100
+                    } else AndAndroidTheme.colors.error
                 )
                 SnsAccountTab(
                     modifier = Modifier.padding(bottom = 96.dp),

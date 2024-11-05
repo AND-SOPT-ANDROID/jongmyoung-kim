@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun SearchTextField(
@@ -50,7 +50,7 @@ fun SearchTextField(
                         .size(20.dp),
                     imageVector = ImageVector.vectorResource(R.drawable.ic_search),
                     contentDescription = stringResource(R.string.ic_search),
-                    tint = LightGray
+                    tint = AndAndroidTheme.colors.gray100
                 )
                 BasicTextField(
                     value = value,
@@ -63,15 +63,15 @@ fun SearchTextField(
                     ),
                     singleLine = true,
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
-                        color = White
+                        color = AndAndroidTheme.colors.white
                     ),
-                    cursorBrush = SolidColor(White),
+                    cursorBrush = SolidColor(AndAndroidTheme.colors.white),
                 ) { innerTextField ->
                     if (value.isEmpty()) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(R.string.search_text_field_hint),
-                            color = LightGray,
+                            color = AndAndroidTheme.colors.gray100,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 platformStyle = PlatformTextStyle(
                                     includeFontPadding = false
@@ -82,7 +82,10 @@ fun SearchTextField(
                     innerTextField()
                 }
             }
-            HorizontalDivider(thickness = 1.dp, color = White)
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = AndAndroidTheme.colors.white
+            )
         }
     }
 }

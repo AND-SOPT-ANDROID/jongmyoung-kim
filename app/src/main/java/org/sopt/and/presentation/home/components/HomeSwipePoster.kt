@@ -30,7 +30,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun HomeSwipePoster(
@@ -47,7 +48,7 @@ fun HomeSwipePoster(
         ) {
             Text(
                 text = poster.first,
-                color = White,
+                color = AndAndroidTheme.colors.white,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.ExtraBold
             )
@@ -90,7 +91,7 @@ fun HomeSwipePoster(
                                 .offset(x = 4.dp, y = 24.dp)
                                 .align(Alignment.BottomStart),
                             text = "${index + 1}",
-                            color = White,
+                            color = AndAndroidTheme.colors.white,
                             style = MaterialTheme.typography.displayLarge,
                             fontWeight = FontWeight.ExtraBold,
                             fontStyle = FontStyle.Italic

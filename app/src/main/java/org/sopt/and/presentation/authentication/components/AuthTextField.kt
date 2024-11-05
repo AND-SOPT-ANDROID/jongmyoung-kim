@@ -1,10 +1,7 @@
 package org.sopt.and.presentation.authentication.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,23 +14,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.ExtraDarkGray
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.WavveMain
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun AuthTextField(
@@ -44,17 +36,12 @@ fun AuthTextField(
     isPassword: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions(),
-    shape: Shape = RoundedCornerShape(8.dp),
-    cursorBrush: Brush = SolidColor(WavveMain)
+    cursorBrush: Brush = SolidColor(AndAndroidTheme.colors.wavveMain)
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     Box(
-        modifier = modifier
-            .clip(shape)
-            .background(ExtraDarkGray)
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier,
         contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
@@ -69,10 +56,10 @@ fun AuthTextField(
                     imeAction = ImeAction.Next
                 )
             },
-            keyboardActions = keyboardActions, // TODO: 로그인, 회원가입 기능 추가
+            keyboardActions = keyboardActions,
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = White
+                color = AndAndroidTheme.colors.white
             ),
             cursorBrush = cursorBrush,
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else visualTransformation,
@@ -81,7 +68,7 @@ fun AuthTextField(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = hint,
-                    color = LightGray,
+                    color = AndAndroidTheme.colors.gray100,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         platformStyle = PlatformTextStyle(
                             includeFontPadding = false
@@ -98,12 +85,12 @@ fun AuthTextField(
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .noRippleClickable {
-                        isPasswordVisible = !isPasswordVisible
-                    },
+                    .noRippleClickable(
+                        onClick = { isPasswordVisible = !isPasswordVisible }
+                    ),
                 text = iconText,
                 style = MaterialTheme.typography.bodyMedium,
-                color = White
+                color = AndAndroidTheme.colors.white
             )
         }
     }

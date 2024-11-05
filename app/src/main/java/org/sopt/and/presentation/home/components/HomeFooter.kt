@@ -24,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.theme.LightGray
-import org.sopt.and.presentation.theme.White
+import org.sopt.and.presentation.theme.AndAndroidTheme
+
 
 @Composable
 fun HomeFooter(
@@ -58,18 +58,21 @@ fun HomeFooter(
             Text(
                 text = buildAnnotatedString {
                     withStyle(
-                        style = SpanStyle(color = LightGray)
+                        style = SpanStyle(color = AndAndroidTheme.colors.gray100)
                     ) {
                         append(stringResource(R.string.footer_agreement_service))
                         append(stringResource(R.string.vertical_bar))
                     }
                     withStyle(
-                        style = SpanStyle(color = White, fontWeight = FontWeight.Bold)
+                        style = SpanStyle(
+                            color = AndAndroidTheme.colors.white,
+                            fontWeight = FontWeight.Bold
+                        )
                     ) {
                         append(stringResource(R.string.footer_agreement_privacy))
                     }
                     withStyle(
-                        style = SpanStyle(color = LightGray)
+                        style = SpanStyle(color = AndAndroidTheme.colors.gray100)
                     ) {
                         append(stringResource(R.string.vertical_bar))
                         append(stringResource(R.string.footer_customer_faq))
@@ -82,48 +85,8 @@ fun HomeFooter(
             )
         }
         Text(
-            text = stringResource(R.string.footer_corp),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_address),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_business_registration),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_mail_order_registration),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_mail_order_information),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_service_provider),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_customer_service_center),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_email_address),
-            color = LightGray,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = stringResource(R.string.footer_copyright),
-            color = LightGray,
+            text = stringResource(R.string.footer_contents),
+            color = AndAndroidTheme.colors.gray100,
             style = MaterialTheme.typography.labelSmall
         )
     }

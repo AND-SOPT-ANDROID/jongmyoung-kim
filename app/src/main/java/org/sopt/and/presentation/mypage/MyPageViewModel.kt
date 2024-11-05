@@ -1,7 +1,5 @@
 package org.sopt.and.presentation.mypage
 
-import android.util.Log
-import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,13 +9,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.repository.UserRepository
-import org.sopt.and.domain.usecase.SignOutUseCase
-import org.sopt.and.presentation.authentication.SignUpSideEffect
+import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
+import org.sopt.and.presentation.mypage.uistate.MyPageUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val signOutUseCase: SignOutUseCase,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
@@ -32,7 +29,7 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun signOut() = viewModelScope.launch {
-        signOutUseCase().onSuccess {
+        userRepository.signOut().onSuccess {
             sideEffect.emit(MyPageSideEffect.NavigateToSignIn)
         }.onFailure {
             sideEffect.emit(MyPageSideEffect.Toast(it.message.orEmpty()))
@@ -44,14 +41,4 @@ class MyPageViewModel @Inject constructor(
             userEmail = userRepository.getUserEmail().getOrThrow()
         )
     }
-}
-
-@Immutable
-data class MyPageUiState(
-    val userEmail: String = ""
-)
-
-sealed class MyPageSideEffect {
-    data object NavigateToSignIn : MyPageSideEffect()
-    class Toast(val message: String) : MyPageSideEffect()
 }
