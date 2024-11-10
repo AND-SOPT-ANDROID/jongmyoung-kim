@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -19,11 +20,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,7 +55,7 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
     val signInMessage = stringResource(R.string.sign_in_success)
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -61,12 +64,6 @@ fun SignInScreen(
                 when (sideEffect) {
                     is SignInSideEffect.NavigateToHome -> onNavigateToHome(signInMessage)
                     is SignInSideEffect.NavigateToSignUp -> onNavigateToSignUp()
-                    is SignInSideEffect.InvalidEmail ->
-                        viewModel.updateErrorTextVisibility(true, false)
-                    is SignInSideEffect.InvalidPassword ->
-                        viewModel.updateErrorTextVisibility(false, true)
-                    is SignInSideEffect.SignInFailed ->
-                        viewModel.updateErrorTextVisibility(false, false)
                 }
             }
         }
@@ -130,7 +127,10 @@ private fun SignInScreenContent(
                 .then(textFieldModifier),
             value = emailInput,
             hint = stringResource(R.string.sign_in_email_hint),
-            onValueChange = onEmailChange
+            onValueChange = onEmailChange,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            )
         )
         if (showEmailError) {
             AlertText(

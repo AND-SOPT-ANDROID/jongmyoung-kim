@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.authentication.uistate
 
+
 data class SignInUiState(
     val emailInput: String = "",
     val passwordInput: String = "",
