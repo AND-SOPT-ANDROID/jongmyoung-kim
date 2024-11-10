@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.sopt.and.data.local.UserDataSource
+import org.sopt.and.data.datasourceImpl.local.LocalDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -18,13 +18,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
-    }
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
-    fun provideUserDataSource(sharedPreferences: SharedPreferences): UserDataSource {
-        return UserDataSource(sharedPreferences)
-    }
+    fun provideUserDataSource(
+        sharedPreferences: SharedPreferences
+    ): LocalDataSourceImpl = LocalDataSourceImpl(sharedPreferences)
 }
