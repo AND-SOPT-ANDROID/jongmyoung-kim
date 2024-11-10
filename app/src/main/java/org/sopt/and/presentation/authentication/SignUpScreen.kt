@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,8 +56,8 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
+    val context = rememberUpdatedState(LocalContext.current).value
     val signUpMessage = stringResource(R.string.sign_up_success)
 
     BackHandler {
@@ -91,6 +95,9 @@ fun SignUpScreen(
         passwordInput = uiState.passwordInput,
         isPasswordValid = uiState.isPasswordValid,
         onPasswordChange = viewModel::updatePasswordInput,
+        hobbyInput = uiState.hobbyInput,
+        isHobbyValid = uiState.isHobbyValid,
+        onHobbyChange = viewModel::updateHobbyInput,
         onCancelClick = { viewModel.updateDialogVisibility(true) },
         onSignUpClick = viewModel::onSignUpClicked,
         isButtonEnabled = uiState.isButtonEnabled
@@ -105,6 +112,9 @@ private fun SignUpScreenContent(
     passwordInput: String,
     isPasswordValid: Boolean,
     onPasswordChange: (String) -> Unit,
+    hobbyInput: String,
+    isHobbyValid: Boolean,
+    onHobbyChange: (String) -> Unit,
     onCancelClick: () -> Unit,
     onSignUpClick: () -> Unit,
     isButtonEnabled: Boolean,
@@ -185,6 +195,9 @@ private fun SignUpScreenContent(
                     value = emailInput,
                     hint = stringResource(R.string.sign_up_email_hint),
                     onValueChange = onEmailChange,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next
+                    ),
                     cursorBrush = SolidColor(AndAndroidTheme.colors.white)
                 )
                 AlertText(
@@ -201,12 +214,35 @@ private fun SignUpScreenContent(
                     onValueChange = onPasswordChange,
                     isPassword = true,
                     visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next
+                    ),
                     cursorBrush = SolidColor(AndAndroidTheme.colors.white)
                 )
                 AlertText(
                     modifier = Modifier.padding(vertical = 10.dp),
                     value = stringResource(R.string.sign_up_password_noti),
                     textColor = if (isPasswordValid || passwordInput.isEmpty()) {
+                        AndAndroidTheme.colors.gray100
+                    } else AndAndroidTheme.colors.error
+                )
+                AuthTextField(
+                    modifier = textFieldModifier,
+                    value = hobbyInput,
+                    hint = stringResource(R.string.sign_up_hobby_hint),
+                    onValueChange = onHobbyChange,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { onSignUpClick() }
+                    ),
+                    cursorBrush = SolidColor(AndAndroidTheme.colors.white)
+                )
+                AlertText(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    value = stringResource(R.string.sign_up_hobby_noti),
+                    textColor = if (isHobbyValid || hobbyInput.isEmpty()) {
                         AndAndroidTheme.colors.gray100
                     } else AndAndroidTheme.colors.error
                 )
