@@ -10,6 +10,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.sopt.and.BuildConfig.BASE_URL
+import org.sopt.and.data.interceptor.TokenInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -27,9 +28,11 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        tokenInterceptor: TokenInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(tokenInterceptor)
         .build()
 
     @Provides
