@@ -35,8 +35,4 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signOut(): Result<Unit> = runCatching {
         localDataSource.clearInfo()
     }
-
-    override suspend fun getUserHobby(): Result<String> = runCatching {
-        localDataSource.userHobby
-    }
 }

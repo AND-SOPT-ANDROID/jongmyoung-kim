@@ -11,6 +11,4 @@ interface AuthRepository {
     suspend fun signUp(user: User): Result<UserId>
 
     suspend fun signOut(): Result<Unit>
-
-    suspend fun getUserHobby(): Result<String>
 }
