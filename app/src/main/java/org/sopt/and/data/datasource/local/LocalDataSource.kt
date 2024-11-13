@@ -3,6 +3,5 @@ package org.sopt.and.data.datasource.local
 
 interface LocalDataSource {
     var accessToken: String
-    var userHobby: String
     fun clearInfo()
 }
