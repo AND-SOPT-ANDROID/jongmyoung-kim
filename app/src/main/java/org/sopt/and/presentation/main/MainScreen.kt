@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.main
 
-import android.util.Log
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding

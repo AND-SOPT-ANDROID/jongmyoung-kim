@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.sopt.and.data.local.UserDataSource
+import org.sopt.and.data.datasource.local.LocalDataSource
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import javax.inject.Inject
 
@@ -14,12 +14,12 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var userDataSource: UserDataSource
+    lateinit var localDataSource: LocalDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val isLoggedIn = userDataSource.getUserInfo() != Pair("", "")
+        val isLoggedIn = localDataSource.accessToken.isNotBlank()
 
         setContent {
             val navController = rememberNavController()
