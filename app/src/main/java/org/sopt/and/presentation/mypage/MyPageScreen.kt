@@ -66,14 +66,14 @@ fun MyPageScreen(
     }
 
     MyPageScreenContent(
-        userEmail = uiState.userEmail,
+        userHobby = uiState.userHobby,
         onClickSignOut = viewModel::signOut
     )
 }
 
 @Composable
 private fun MyPageScreenContent(
-    userEmail: String,
+    userHobby: String,
     onClickSignOut: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -90,7 +90,7 @@ private fun MyPageScreenContent(
             modifier = Modifier.padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box( // Profile 이미지 관련 기능 구현 시 수정
+            Box( // TODO: Profile 이미지 관련 기능 구현 시 수정
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
@@ -98,7 +98,7 @@ private fun MyPageScreenContent(
             )
             Text(
                 modifier = Modifier.padding(start = 15.dp),
-                text = stringResource(R.string.sir, userEmail),
+                text = stringResource(R.string.hobby, userHobby),
                 color = AndAndroidTheme.colors.white,
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -120,7 +120,7 @@ private fun MyPageScreenContent(
                 tint = AndAndroidTheme.colors.white
             )
         }
-        // 임시 로그아웃 버튼, 추후 수정 필요
+        // TODO: 임시 로그아웃 버튼, 추후 수정 필요
         Text(
             modifier = Modifier
                 .padding(start = 24.dp)

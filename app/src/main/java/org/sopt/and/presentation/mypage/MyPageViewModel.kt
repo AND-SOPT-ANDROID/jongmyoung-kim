@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.sopt.and.domain.repository.UserRepository
+import org.sopt.and.domain.repository.AuthRepository
+import org.sopt.and.domain.repository.MyPageRepository
 import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
 import org.sopt.and.presentation.mypage.uistate.MyPageUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository,
+    private val myPageRepository: MyPageRepository
 ) : ViewModel() {
 
     val uiState: StateFlow<MyPageUiState>
@@ -25,20 +27,24 @@ class MyPageViewModel @Inject constructor(
         field = MutableSharedFlow<MyPageSideEffect>()
 
     init {
-        getUserEmail()
+        getUserHobby()
     }
 
     fun signOut() = viewModelScope.launch {
-        userRepository.signOut().onSuccess {
+        authRepository.signOut().onSuccess {
             sideEffect.emit(MyPageSideEffect.NavigateToSignIn)
         }.onFailure {
             sideEffect.emit(MyPageSideEffect.Toast(it.message.orEmpty()))
         }
     }
 
-    fun getUserEmail() = viewModelScope.launch {
-        uiState.value = uiState.value.copy(
-            userEmail = userRepository.getUserEmail().getOrThrow()
-        )
+    fun getUserHobby() = viewModelScope.launch {
+        myPageRepository.getMyHobby().onSuccess {
+            uiState.value = uiState.value.copy(
+                userHobby = it.hobby
+            )
+        }.onFailure {
+            // TODO: 불러오기 실패했을 경우 (네트워크 오류)
+        }
     }
 }

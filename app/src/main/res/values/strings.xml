@@ -90,7 +90,7 @@
 
     <!--    My Page-->
     <string name="my_page">MY</string>
-    <string name="sir">%s님</string>
+    <string name="hobby">취미: %s</string>
     <string name="sign_out">로그아웃</string>
     <string name="purchase">구매하기</string>
     <string name="first_purchase">첫 결제 시 첫 달 100원!</string>
