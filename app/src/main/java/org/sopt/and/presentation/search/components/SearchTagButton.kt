@@ -33,7 +33,7 @@ fun SearchTagButton(
     @StringRes titleResId: Int,
     @StringRes descriptionResId: Int,
     modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit = {} // 각 태그 클릭 시, 대응하는 화면 표시
+    onButtonClick: () -> Unit = {} // TODO: 각 태그 클릭 시, 대응하는 화면 표시
 ) {
     Row(
         modifier = modifier

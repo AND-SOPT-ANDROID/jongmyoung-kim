@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -105,14 +106,17 @@ private fun SearchScreenContent(
             }
             stickyHeader {
                 CustomTabRow(
-                    tabTitles = listOf("인기 시리즈", "인기 영화"),
+                    tabTitles = listOf(
+                        stringResource(R.string.tab_trending_series),
+                        stringResource(R.string.tab_trending_movies)
+                    ),
                     selectedTabIndex = tab,
                     onTabSelected = {
                         tab = it
                     }
                 )
             }
-            // Popular Series, Movies를 HorizontalPager로 묶어야 함
+            // TODO: Popular Series, Movies를 HorizontalPager로 묶어야 함
             item {
                 popularSeries.forEach {
                     Column {
