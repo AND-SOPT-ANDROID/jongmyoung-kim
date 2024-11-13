@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.sopt.and.data.datasource.local.LocalDataSource
 import org.sopt.and.data.datasource.remote.AuthRemoteDataSource
+import org.sopt.and.data.datasource.remote.MyPageRemoteDataSource
 import org.sopt.and.data.datasourceImpl.local.LocalDataSourceImpl
 import org.sopt.and.data.datasourceImpl.remote.AuthRemoteDataSourceImpl
+import org.sopt.and.data.datasourceImpl.remote.MyPageRemoteDataSourceImpl
 import javax.inject.Singleton
 
 
@@ -20,6 +22,12 @@ abstract class DataSourceModule {
     abstract fun bindAuthRemoteDataSource(
         authRemoteDataSourceImpl: AuthRemoteDataSourceImpl
     ): AuthRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindMyPageRemoteDataSource(
+        myPageRemoteDataSourceImpl: MyPageRemoteDataSourceImpl
+    ): MyPageRemoteDataSource
 
     @Binds
     @Singleton

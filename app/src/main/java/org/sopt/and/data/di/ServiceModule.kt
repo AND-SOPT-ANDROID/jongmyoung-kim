@@ -22,7 +22,7 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideUserService(
+    fun provideMyPageService(
         retrofit: Retrofit
     ): MyPageService = retrofit.create(MyPageService::class.java)
 }
