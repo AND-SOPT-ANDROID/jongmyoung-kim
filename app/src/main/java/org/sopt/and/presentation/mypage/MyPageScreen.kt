@@ -37,6 +37,7 @@ import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.mypage.components.MyPageOverview
 import org.sopt.and.presentation.mypage.components.MyPageService
+import org.sopt.and.presentation.mypage.components.MyPageSettingBottomSheet
 import org.sopt.and.presentation.mypage.components.MyPageTicket
 import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
@@ -65,16 +66,29 @@ fun MyPageScreen(
         }
     }
 
+    if (uiState.isBottomSheetVisible) {
+        MyPageSettingBottomSheet(
+            onDismissRequest = { viewModel.updateBottomSheetVisibility(false) },
+            onButtonClicked = viewModel::modifyUserInformation,
+            hobbyInput = uiState.hobbyInput,
+            onHobbyInputChange = viewModel::updateHobbyInput,
+            passwordInput = uiState.passwordInput,
+            onPasswordInputChange = viewModel::updatePasswordInput
+        )
+    }
+
     MyPageScreenContent(
         userHobby = uiState.userHobby,
-        onClickSignOut = viewModel::signOut
+        onSignOutClicked = viewModel::onSignOutClicked,
+        onSettingClicked = { viewModel.updateBottomSheetVisibility(true) }
     )
 }
 
 @Composable
 private fun MyPageScreenContent(
     userHobby: String,
-    onClickSignOut: () -> Unit,
+    onSignOutClicked: () -> Unit,
+    onSettingClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -106,7 +120,9 @@ private fun MyPageScreenContent(
             Icon(
                 modifier = Modifier
                     .size(28.dp)
-                    .noRippleClickable({}),
+                    .noRippleClickable({
+                        // TODO: 구현 필요
+                    }),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_notification),
                 contentDescription = stringResource(R.string.ic_notification),
                 tint = AndAndroidTheme.colors.white
@@ -114,7 +130,7 @@ private fun MyPageScreenContent(
             Icon(
                 modifier = Modifier
                     .size(28.dp)
-                    .noRippleClickable({}),
+                    .noRippleClickable(onSettingClicked),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_setting),
                 contentDescription = stringResource(R.string.ic_setting),
                 tint = AndAndroidTheme.colors.white
@@ -124,7 +140,7 @@ private fun MyPageScreenContent(
         Text(
             modifier = Modifier
                 .padding(start = 24.dp)
-                .noRippleClickable(onClickSignOut),
+                .noRippleClickable(onSignOutClicked),
             text = stringResource(R.string.sign_out),
             color = AndAndroidTheme.colors.white,
             style = MaterialTheme.typography.bodyLarge

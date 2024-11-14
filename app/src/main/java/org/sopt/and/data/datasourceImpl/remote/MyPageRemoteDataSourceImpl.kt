@@ -5,6 +5,7 @@ import org.sopt.and.data.service.MyPageService
 import org.sopt.and.data.service.model.BaseResponse
 import org.sopt.and.data.service.model.request.HobbyModifyRequest
 import org.sopt.and.data.service.model.response.HobbyResponse
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -18,5 +19,5 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun modifyMyHobby(
         hobbyModifyRequest: HobbyModifyRequest
-    ): BaseResponse<Any> = myPageService.modifyMyHobby(hobbyModifyRequest)
+    ): Response<BaseResponse<String?>?> = myPageService.modifyMyHobby(hobbyModifyRequest)
 }

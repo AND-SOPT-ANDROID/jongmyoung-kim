@@ -5,10 +5,10 @@ import org.sopt.and.data.service.model.request.HobbyModifyRequest
 
 data class UserHobby(
     val hobby: String,
-    val password: String? = null
+    val password: String
 ) {
     fun toHobbyModifyRequest() = HobbyModifyRequest(
         hobby = hobby,
-        password = password.orEmpty()
+        password = password
     )
 }

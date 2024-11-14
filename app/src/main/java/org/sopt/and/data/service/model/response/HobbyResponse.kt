@@ -10,6 +10,7 @@ data class HobbyResponse(
     @SerialName("hobby") val hobby: String
 ) {
     fun toUserHobby() = UserHobby(
-        hobby = hobby
+        hobby = hobby,
+        password = ""
     )
 }

@@ -96,5 +96,6 @@
     <string name="first_purchase">첫 결제 시 첫 달 100원!</string>
     <string name="no_ticket">현재 보유하신 이용권이 없습니다.</string>
     <string name="sign_out_success">로그아웃되었습니다.</string>
+    <string name="change">수정하기</string>
 
 </resources>

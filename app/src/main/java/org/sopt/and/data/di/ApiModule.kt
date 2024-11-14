@@ -8,10 +8,13 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.sopt.and.BuildConfig.BASE_URL
 import org.sopt.and.data.interceptor.TokenInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
+import java.lang.reflect.Type
 import javax.inject.Singleton
 
 
@@ -39,9 +42,20 @@ object ApiModule {
     @Singleton
     fun provideRetrofit(
         client: OkHttpClient
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-        .build()
+    ): Retrofit {
+        val nullOnEmptyConverterFactory = object : Converter.Factory() {
+            fun converterFactory() = this
+            override fun responseBodyConverter(type: Type, annotations: Array<out Annotation>, retrofit: Retrofit) = object : Converter<ResponseBody, Any?> {
+                val nextResponseBodyConverter = retrofit.nextResponseBodyConverter<Any?>(converterFactory(), type, annotations)
+                override fun convert(value: ResponseBody) = if (value.contentLength() == 0L) null else nextResponseBodyConverter.convert(value)
+            }
+        }
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(nullOnEmptyConverterFactory)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
 }
