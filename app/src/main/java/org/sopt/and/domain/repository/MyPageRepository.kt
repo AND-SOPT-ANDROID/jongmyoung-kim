@@ -7,7 +7,7 @@ interface MyPageRepository {
 
     suspend fun getMyHobby(): Result<UserHobby>
 
-    suspend fun getOtherHobby(): Result<UserHobby>
+    suspend fun getOtherHobby(no: String): Result<UserHobby>
 
     suspend fun modifyMyHobby(hobbyModifyRequest: HobbyModifyRequest): Result<Unit>
 }

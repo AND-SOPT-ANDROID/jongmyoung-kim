@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.entity.UserHobby
 import org.sopt.and.domain.repository.AuthRepository
-import org.sopt.and.domain.repository.MyPageRepository
+import org.sopt.and.domain.usecase.GetHobbyUseCase
 import org.sopt.and.domain.usecase.ModifyMyInfoUseCase
 import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
 import org.sopt.and.presentation.mypage.uistate.MyPageUiState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val myPageRepository: MyPageRepository,
+    private val getHobbyUseCase: GetHobbyUseCase,
     private val modifyMyInfoUseCase: ModifyMyInfoUseCase
 ) : ViewModel() {
 
@@ -31,7 +31,7 @@ class MyPageViewModel @Inject constructor(
         field = MutableSharedFlow<MyPageSideEffect>()
 
     init {
-        getUserHobby()
+        getMyHobby()
     }
 
     fun updateHobbyInput(hobbyInput: String) {
@@ -70,7 +70,7 @@ class MyPageViewModel @Inject constructor(
             }
         ).onSuccess {
             updateBottomSheetVisibility(false)
-            if (uiState.value.passwordInput.isEmpty()) getUserHobby() // 취미 변경 시 취미 업데이트
+            if (uiState.value.passwordInput.isEmpty()) getMyHobby() // 취미 변경 시 취미 업데이트
             else onSignOutClicked() // 비밀번호 변경 시 로그아웃
             uiState.value = uiState.value.copy(
                 hobbyInput = "",
@@ -83,8 +83,8 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun getUserHobby() = viewModelScope.launch {
-        myPageRepository.getMyHobby().onSuccess {
+    fun getMyHobby() = viewModelScope.launch {
+        getHobbyUseCase("").onSuccess {
             uiState.value = uiState.value.copy(
                 userHobby = it.hobby
             )

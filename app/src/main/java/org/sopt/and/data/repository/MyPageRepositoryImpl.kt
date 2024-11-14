@@ -1,6 +1,5 @@
 package org.sopt.and.data.repository
 
-import android.util.Log
 import org.sopt.and.data.datasource.remote.MyPageRemoteDataSource
 import org.sopt.and.data.service.model.request.HobbyModifyRequest
 import org.sopt.and.domain.entity.UserHobby
@@ -16,8 +15,10 @@ class MyPageRepositoryImpl @Inject constructor(
         myPageRemoteDataSource.getMyHobby().result.toUserHobby()
     }
 
-    override suspend fun getOtherHobby(): Result<UserHobby> = runCatching {
-        myPageRemoteDataSource.getOtherHobby().result.toUserHobby()
+    override suspend fun getOtherHobby(
+        no: String
+    ): Result<UserHobby> = runCatching {
+        myPageRemoteDataSource.getOtherHobby(no).result.toUserHobby()
     }
 
     override suspend fun modifyMyHobby(

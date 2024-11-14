@@ -7,6 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 
 interface MyPageService {
@@ -14,7 +15,9 @@ interface MyPageService {
     suspend fun getMyHobby(): BaseResponse<HobbyResponse>
 
     @GET("/user/{no}/hobby")
-    suspend fun getOthersHobby(): BaseResponse<HobbyResponse>
+    suspend fun getOthersHobby(
+        @Path("no") no: String
+    ): BaseResponse<HobbyResponse>
 
     @PUT("/user")
     suspend fun modifyMyHobby(

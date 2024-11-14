@@ -92,7 +92,11 @@ fun MainNavigation(
             HomeScreen()
         }
         composable<MainTabRoute.Search> {
-            SearchScreen()
+            SearchScreen(
+                onSearchHobby = { message ->
+                    message?.let { showSnackbar(it) }
+                }
+            )
         }
         composable<MainTabRoute.MyPage> {
             MyPageScreen(

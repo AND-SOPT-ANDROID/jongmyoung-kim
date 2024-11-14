@@ -15,7 +15,9 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getMyHobby(): BaseResponse<HobbyResponse> = myPageService.getMyHobby()
 
-    override suspend fun getOtherHobby(): BaseResponse<HobbyResponse> = myPageService.getOthersHobby()
+    override suspend fun getOtherHobby(
+        no: String
+    ): BaseResponse<HobbyResponse> = myPageService.getOthersHobby(no)
 
     override suspend fun modifyMyHobby(
         hobbyModifyRequest: HobbyModifyRequest

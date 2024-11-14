@@ -87,6 +87,7 @@
     <string name="tag_button_movie">영화</string>
     <string name="tab_trending_series">인기 시리즈</string>
     <string name="tab_trending_movies">인기 영화</string>
+    <string name="search_result">취미: %s</string>
 
     <!--    My Page-->
     <string name="my_page">MY</string>

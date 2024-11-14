@@ -10,7 +10,9 @@ interface MyPageRemoteDataSource {
 
     suspend fun getMyHobby(): BaseResponse<HobbyResponse>
 
-    suspend fun getOtherHobby(): BaseResponse<HobbyResponse>
+    suspend fun getOtherHobby(
+        no: String
+    ): BaseResponse<HobbyResponse>
 
     suspend fun modifyMyHobby(
         hobbyModifyRequest: HobbyModifyRequest
