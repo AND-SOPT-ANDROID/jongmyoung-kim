@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.sopt.and.data.datasource.local.LocalDataSource
+import org.sopt.and.data.datasource.local.LocalPreferences
 import org.sopt.and.data.datasource.remote.AuthRemoteDataSource
 import org.sopt.and.data.datasource.remote.MyPageRemoteDataSource
-import org.sopt.and.data.datasourceImpl.local.LocalDataSourceImpl
+import org.sopt.and.data.datasourceImpl.local.LocalPreferencesImpl
 import org.sopt.and.data.datasourceImpl.remote.AuthRemoteDataSourceImpl
 import org.sopt.and.data.datasourceImpl.remote.MyPageRemoteDataSourceImpl
 import javax.inject.Singleton
@@ -31,7 +31,7 @@ abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindLocalDataSource(
-        localDataSourceImpl: LocalDataSourceImpl
-    ): LocalDataSource
+    abstract fun bindLocalPreferences(
+        localPreferencesImpl: LocalPreferencesImpl
+    ): LocalPreferences
 }

@@ -1,6 +1,5 @@
 package org.sopt.and.domain.repository
 
-import org.sopt.and.data.service.model.request.HobbyModifyRequest
 import org.sopt.and.domain.entity.UserHobby
 
 interface MyPageRepository {
@@ -9,5 +8,5 @@ interface MyPageRepository {
 
     suspend fun getOtherHobby(no: String): Result<UserHobby>
 
-    suspend fun modifyMyHobby(hobbyModifyRequest: HobbyModifyRequest): Result<Unit>
+    suspend fun modifyMyHobby(userHobby: UserHobby): Result<Unit>
 }

@@ -1,7 +1,8 @@
 package org.sopt.and.data.repository
 
 import org.sopt.and.data.datasource.remote.MyPageRemoteDataSource
-import org.sopt.and.data.service.model.request.HobbyModifyRequest
+import org.sopt.and.data.mapper.toHobbyModifyRequest
+import org.sopt.and.data.mapper.toUserHobby
 import org.sopt.and.domain.entity.UserHobby
 import org.sopt.and.domain.repository.MyPageRepository
 import javax.inject.Inject
@@ -22,8 +23,8 @@ class MyPageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun modifyMyHobby(
-        hobbyModifyRequest: HobbyModifyRequest
+        userHobby: UserHobby
     ): Result<Unit> = runCatching {
-        myPageRemoteDataSource.modifyMyHobby(hobbyModifyRequest)
+        myPageRemoteDataSource.modifyMyHobby(userHobby.toHobbyModifyRequest())
     }
 }

@@ -1,13 +1,13 @@
 package org.sopt.and.data.datasourceImpl.local
 
 import android.content.SharedPreferences
-import org.sopt.and.data.datasource.local.LocalDataSource
+import org.sopt.and.data.datasource.local.LocalPreferences
 import javax.inject.Inject
 
 
-class LocalDataSourceImpl @Inject constructor(
+class LocalPreferencesImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
-) : LocalDataSource {
+) : LocalPreferences {
 
     override var accessToken: String
         get() = sharedPreferences.getString(ACCESS_TOKEN, DEFAULT).orEmpty()

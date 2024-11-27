@@ -1,7 +1,7 @@
 package org.sopt.and.data.datasource.local
 
 
-interface LocalDataSource {
+interface LocalPreferences {
     var accessToken: String
     fun clearInfo()
 }

@@ -11,6 +11,6 @@ class ModifyMyInfoUseCase @Inject constructor(
     suspend operator fun invoke(
         userHobby: UserHobby
     ): Result<Unit> = myPageRepository.modifyMyHobby(
-        hobbyModifyRequest = userHobby.toHobbyModifyRequest()
+        userHobby = userHobby
     )
 }

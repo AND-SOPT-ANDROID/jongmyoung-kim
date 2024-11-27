@@ -7,12 +7,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.sopt.and.data.datasourceImpl.local.LocalDataSourceImpl
+import org.sopt.and.data.datasourceImpl.local.LocalPreferencesImpl
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object PreferencesModule {
 
     private const val PREFERENCES_NAME = "prefs_name"
 
@@ -24,7 +24,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserDataSource(
+    fun provideLocalPreferences(
         sharedPreferences: SharedPreferences
-    ): LocalDataSourceImpl = LocalDataSourceImpl(sharedPreferences)
+    ): LocalPreferencesImpl = LocalPreferencesImpl(sharedPreferences)
 }

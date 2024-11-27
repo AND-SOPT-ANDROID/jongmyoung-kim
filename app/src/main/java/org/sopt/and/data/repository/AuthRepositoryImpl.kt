@@ -1,7 +1,11 @@
 package org.sopt.and.data.repository
 
-import org.sopt.and.data.datasource.local.LocalDataSource
+import org.sopt.and.data.datasource.local.LocalPreferences
 import org.sopt.and.data.datasource.remote.AuthRemoteDataSource
+import org.sopt.and.data.mapper.toSignInRequest
+import org.sopt.and.data.mapper.toSignUpRequest
+import org.sopt.and.data.mapper.toToken
+import org.sopt.and.data.mapper.toUserId
 import org.sopt.and.domain.entity.Token
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.entity.UserId
@@ -10,7 +14,7 @@ import javax.inject.Inject
 
 
 class AuthRepositoryImpl @Inject constructor(
-    private val localDataSource: LocalDataSource,
+    private val localPreferences: LocalPreferences,
     private val authRemoteDataSource: AuthRemoteDataSource
 ) : AuthRepository {
 
@@ -20,7 +24,7 @@ class AuthRepositoryImpl @Inject constructor(
         val response = authRemoteDataSource.signIn(
             signInRequest = user.toSignInRequest()
         )
-        localDataSource.accessToken = response.result.accessToken
+        localPreferences.accessToken = response.result.accessToken
         response.result.toToken()
     }
 
@@ -29,10 +33,10 @@ class AuthRepositoryImpl @Inject constructor(
     ): Result<UserId> = runCatching {
         authRemoteDataSource.signUp(
             signUpRequest = user.toSignUpRequest()
-        ).result.toId()
+        ).result.toUserId()
     }
 
     override suspend fun signOut(): Result<Unit> = runCatching {
-        localDataSource.clearInfo()
+        localPreferences.clearInfo()
     }
 }

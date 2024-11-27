@@ -31,7 +31,8 @@ fun HomeTabRow(
         itemsIndexed(
             items = HomeTab.entries,
             key = { index, _ -> index },
-            contentType = { _, item -> item.name }) { index, tab ->
+            contentType = { _, item -> item.name }
+        ) { index, tab ->
             Text(
                 modifier = Modifier
                     .padding(
