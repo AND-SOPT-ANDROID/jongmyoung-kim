@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.sopt.and.domain.entity.User
+import org.sopt.and.domain.exception.SignUpError
 import org.sopt.and.domain.usecase.SignUpUseCase
 import org.sopt.and.presentation.authentication.sideeffect.SignUpSideEffect
 import org.sopt.and.presentation.authentication.uistate.SignUpUiState
-import org.sopt.and.presentation.util.Constants.Companion.MAX_EMAIL
-import org.sopt.and.presentation.util.Constants.Companion.MAX_PASSWORD
-import org.sopt.and.presentation.util.Constants.Companion.MIN_EMAIL
-import org.sopt.and.presentation.util.Constants.Companion.MIN_PASSWORD
+import org.sopt.and.presentation.util.Constants.Companion.MAX_LENGTH
 import javax.inject.Inject
+
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
@@ -29,20 +29,29 @@ class SignUpViewModel @Inject constructor(
         field = MutableSharedFlow<SignUpSideEffect>()
 
     fun updateEmailInput(emailInput: String) {
-        val isValid = isEmailValid(emailInput)
-        if (emailInput.length <= MAX_EMAIL) uiState.value = uiState.value.copy(
+        val isValid = isInputValid(emailInput)
+        if (emailInput.length <= MAX_LENGTH) uiState.value = uiState.value.copy(
             emailInput = emailInput,
             isEmailValid = isValid,
-            isButtonEnabled = isValid && uiState.value.isPasswordValid
+            isButtonEnabled = isValid && uiState.value.isPasswordValid && uiState.value.isHobbyValid
         )
     }
 
     fun updatePasswordInput(passwordInput: String) {
-        val isValid = isPasswordValid(passwordInput)
-        if (passwordInput.length <= MAX_PASSWORD) uiState.value = uiState.value.copy(
+        val isValid = isInputValid(passwordInput)
+        if (passwordInput.length <= MAX_LENGTH) uiState.value = uiState.value.copy(
             passwordInput = passwordInput,
             isPasswordValid = isValid,
-            isButtonEnabled = isValid && uiState.value.isEmailValid
+            isButtonEnabled = isValid && uiState.value.isEmailValid && uiState.value.isHobbyValid
+        )
+    }
+
+    fun updateHobbyInput(hobbyInput: String) {
+        val isValid = isInputValid(hobbyInput)
+        if (hobbyInput.length <= MAX_LENGTH) uiState.value = uiState.value.copy(
+            hobbyInput = hobbyInput,
+            isHobbyValid = isValid,
+            isButtonEnabled = isValid && uiState.value.isEmailValid && uiState.value.isPasswordValid
         )
     }
 
@@ -53,11 +62,22 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun onSignUpClicked() = viewModelScope.launch {
-        signUpUseCase(uiState.value.emailInput, uiState.value.passwordInput).onSuccess {
-            updateDialogVisibility(false)
+        signUpUseCase(
+            user = with(uiState.value) {
+                User(
+                    username = emailInput,
+                    password = passwordInput,
+                    hobby = hobbyInput
+                )
+            }
+        ).onSuccess {
             sideEffect.emit(SignUpSideEffect.NavigateToSignIn)
         }.onFailure {
-            sideEffect.emit(SignUpSideEffect.Toast(it.message.orEmpty()))
+            when(it) {
+                is SignUpError.DuplicateUserNameException -> {
+                    sideEffect.emit(SignUpSideEffect.Toast(ERROR_MESSAGE))
+                }
+            }
         }
     }
 
@@ -66,15 +86,10 @@ class SignUpViewModel @Inject constructor(
         sideEffect.emit(SignUpSideEffect.NavigateBackToSignIn)
     }
 
-    private fun isEmailValid(email: String) = emailRegex.matches(email) && email.length >= MIN_EMAIL
+    private fun isInputValid(input: String) = regex.matches(input) && input.isNotBlank()
 
-    private fun isPasswordValid(password: String) =
-        passwordRegex.matches(password) && password.length >= MIN_PASSWORD
-
-    companion object Validator {
-        private val emailRegex = "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$".toRegex()
-        private val passwordRegex =
-            ("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])|(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#\$%^&*])|" +
-                    "(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*])|(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%^&*]).{8,20}$").toRegex()
+    companion object {
+        private val regex = "^[A-Za-z0-9가-힣]{1,8}$".toRegex()
+        private const val ERROR_MESSAGE = "중복된 닉네임입니다." // 임시 에러 문구
     }
 }

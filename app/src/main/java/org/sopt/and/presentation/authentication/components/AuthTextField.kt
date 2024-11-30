@@ -35,6 +35,7 @@ fun AuthTextField(
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
     cursorBrush: Brush = SolidColor(AndAndroidTheme.colors.wavveMain)
 ) {
@@ -47,15 +48,7 @@ fun AuthTextField(
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            keyboardOptions = if (isPassword) {
-                KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                )
-            } else {
-                KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next
-                )
-            },
+            keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyMedium.copy(

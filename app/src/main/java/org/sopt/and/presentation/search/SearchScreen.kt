@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.search
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,35 +16,58 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
 import org.sopt.and.presentation.common.CustomTabRow
 import org.sopt.and.presentation.search.components.SearchPopularItem
 import org.sopt.and.presentation.search.components.SearchTagButton
 import org.sopt.and.presentation.search.components.SearchTextField
+import org.sopt.and.presentation.search.sideeffect.SearchSideEffect
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.AndAndroidTheme
 
 
 @Composable
 fun SearchScreen(
+    onSearchHobby: (String?) -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
+    val context = rememberUpdatedState(LocalContext.current).value
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.sideEffect.collect { sideEffect ->
+                when (sideEffect) {
+                    is SearchSideEffect.Toast ->
+                        Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+                    is SearchSideEffect.ShowSnackbar -> onSearchHobby(context.getString(R.string.search_result, sideEffect.message))
+                }
+            }
+        }
+    }
 
     SearchScreenContent(
         popularSeries = uiState.popularSeriesPosters,
         popularMovies = uiState.popularMoviePosters,
         text = uiState.searchInput,
-        onTextChange = { viewModel.updateSearchInput(it) },
-        onTabClick = { viewModel.onTabClicked(it) }
+        onTextChange = viewModel::updateSearchInput,
+        onTabClick = viewModel::onTabClicked,
+        onSearchHobby = viewModel::onHobbySearched
     )
 }
 
@@ -55,6 +79,7 @@ private fun SearchScreenContent(
     text: String,
     onTextChange: (String) -> Unit,
     onTabClick: (Int) -> Unit,
+    onSearchHobby: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var tab by remember { mutableStateOf(0) }
@@ -78,6 +103,7 @@ private fun SearchScreenContent(
         SearchTextField(
             value = text,
             onValueChange = onTextChange,
+            onSearchHobby = { onSearchHobby(text) },
             modifier = commonModifier.padding(bottom = 8.dp)
         )
         LazyColumn(
@@ -105,14 +131,17 @@ private fun SearchScreenContent(
             }
             stickyHeader {
                 CustomTabRow(
-                    tabTitles = listOf("인기 시리즈", "인기 영화"),
+                    tabTitles = listOf(
+                        stringResource(R.string.tab_trending_series),
+                        stringResource(R.string.tab_trending_movies)
+                    ),
                     selectedTabIndex = tab,
                     onTabSelected = {
                         tab = it
                     }
                 )
             }
-            // Popular Series, Movies를 HorizontalPager로 묶어야 함
+            // TODO: Popular Series, Movies를 HorizontalPager로 묶어야 함
             item {
                 popularSeries.forEach {
                     Column {
@@ -136,6 +165,6 @@ private fun SearchScreenContent(
 @Composable
 private fun SearchScreenPreview() {
     ANDANDROIDTheme {
-        SearchScreen()
+        SearchScreen({})
     }
 }

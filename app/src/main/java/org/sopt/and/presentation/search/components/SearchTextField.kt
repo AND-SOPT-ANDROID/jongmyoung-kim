@@ -33,6 +33,7 @@ import org.sopt.and.presentation.theme.AndAndroidTheme
 fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
+    onSearchHobby: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -59,7 +60,7 @@ fun SearchTextField(
                         imeAction = ImeAction.Search
                     ),
                     keyboardActions = KeyboardActions(
-                        // TODO: 검색 기능 구현
+                        onSearch = { onSearchHobby() }
                     ),
                     singleLine = true,
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -96,7 +97,8 @@ private fun SearchTextFieldPreview() {
     ANDANDROIDTheme {
         SearchTextField(
             value = "",
-            onValueChange = {}
+            onValueChange = {},
+            onSearchHobby = {}
         )
     }
 }

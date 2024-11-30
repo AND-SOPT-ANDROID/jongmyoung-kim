@@ -37,6 +37,7 @@ import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.mypage.components.MyPageOverview
 import org.sopt.and.presentation.mypage.components.MyPageService
+import org.sopt.and.presentation.mypage.components.MyPageSettingBottomSheet
 import org.sopt.and.presentation.mypage.components.MyPageTicket
 import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
@@ -65,16 +66,29 @@ fun MyPageScreen(
         }
     }
 
+    if (uiState.isBottomSheetVisible) {
+        MyPageSettingBottomSheet(
+            onDismissRequest = { viewModel.updateBottomSheetVisibility(false) },
+            onButtonClicked = viewModel::modifyUserInformation,
+            hobbyInput = uiState.hobbyInput,
+            onHobbyInputChange = viewModel::updateHobbyInput,
+            passwordInput = uiState.passwordInput,
+            onPasswordInputChange = viewModel::updatePasswordInput
+        )
+    }
+
     MyPageScreenContent(
-        userEmail = uiState.userEmail,
-        onClickSignOut = viewModel::signOut
+        userHobby = uiState.userHobby,
+        onSignOutClicked = viewModel::onSignOutClicked,
+        onSettingClicked = { viewModel.updateBottomSheetVisibility(true) }
     )
 }
 
 @Composable
 private fun MyPageScreenContent(
-    userEmail: String,
-    onClickSignOut: () -> Unit,
+    userHobby: String,
+    onSignOutClicked: () -> Unit,
+    onSettingClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -90,7 +104,7 @@ private fun MyPageScreenContent(
             modifier = Modifier.padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box( // Profile 이미지 관련 기능 구현 시 수정
+            Box( // TODO: Profile 이미지 관련 기능 구현 시 수정
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
@@ -98,7 +112,7 @@ private fun MyPageScreenContent(
             )
             Text(
                 modifier = Modifier.padding(start = 15.dp),
-                text = stringResource(R.string.sir, userEmail),
+                text = stringResource(R.string.hobby, userHobby),
                 color = AndAndroidTheme.colors.white,
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -106,7 +120,9 @@ private fun MyPageScreenContent(
             Icon(
                 modifier = Modifier
                     .size(28.dp)
-                    .noRippleClickable({}),
+                    .noRippleClickable({
+                        // TODO: 구현 필요
+                    }),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_notification),
                 contentDescription = stringResource(R.string.ic_notification),
                 tint = AndAndroidTheme.colors.white
@@ -114,17 +130,17 @@ private fun MyPageScreenContent(
             Icon(
                 modifier = Modifier
                     .size(28.dp)
-                    .noRippleClickable({}),
+                    .noRippleClickable(onSettingClicked),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_setting),
                 contentDescription = stringResource(R.string.ic_setting),
                 tint = AndAndroidTheme.colors.white
             )
         }
-        // 임시 로그아웃 버튼, 추후 수정 필요
+        // TODO: 임시 로그아웃 버튼, 추후 수정 필요
         Text(
             modifier = Modifier
                 .padding(start = 24.dp)
-                .noRippleClickable(onClickSignOut),
+                .noRippleClickable(onSignOutClicked),
             text = stringResource(R.string.sign_out),
             color = AndAndroidTheme.colors.white,
             style = MaterialTheme.typography.bodyLarge

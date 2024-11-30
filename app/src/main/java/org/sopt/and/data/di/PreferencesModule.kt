@@ -7,24 +7,24 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.sopt.and.data.local.UserDataSource
+import org.sopt.and.data.datasourceImpl.local.LocalPreferencesImpl
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object PreferencesModule {
 
     private const val PREFERENCES_NAME = "prefs_name"
 
     @Provides
     @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
-    }
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
-    fun provideUserDataSource(sharedPreferences: SharedPreferences): UserDataSource {
-        return UserDataSource(sharedPreferences)
-    }
+    fun provideLocalPreferences(
+        sharedPreferences: SharedPreferences
+    ): LocalPreferencesImpl = LocalPreferencesImpl(sharedPreferences)
 }

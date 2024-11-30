@@ -1,22 +1,18 @@
 package org.sopt.and.domain.usecase
 
+import org.sopt.and.domain.entity.User
+import org.sopt.and.domain.entity.UserId
 import org.sopt.and.domain.exception.SignUpError
-import org.sopt.and.domain.repository.UserRepository
+import org.sopt.and.domain.repository.AuthRepository
 import javax.inject.Inject
 
+
 class SignUpUseCase @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository
 ) {
-    operator fun invoke(
-        email: String,
-        password: String
-    ): Result<Unit> {
-        val result = userRepository.signUp(email, password)
-        result.onFailure {
-            if (it is SignUpError.SignUpFailedException) {
-                return Result.failure(SignUpError.SignUpFailedException())
-            }
-        }
-        return result
+    suspend operator fun invoke(
+        user: User
+    ): Result<UserId> = authRepository.signUp(user).onFailure {
+        return Result.failure(SignUpError.DuplicateUserNameException())
     }
 }

@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.main
 
-import android.util.Log
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -93,7 +92,11 @@ fun MainNavigation(
             HomeScreen()
         }
         composable<MainTabRoute.Search> {
-            SearchScreen()
+            SearchScreen(
+                onSearchHobby = { message ->
+                    message?.let { showSnackbar(it) }
+                }
+            )
         }
         composable<MainTabRoute.MyPage> {
             MyPageScreen(

@@ -1,5 +1,6 @@
 package org.sopt.and.domain.exception
 
+
 sealed class SignInError : Throwable() {
     class InvalidEmailException : SignInError()
     class InvalidPasswordException : SignInError()
@@ -7,5 +8,5 @@ sealed class SignInError : Throwable() {
 }
 
 sealed class SignUpError : Throwable() {
-    class SignUpFailedException : SignUpError()
+    class DuplicateUserNameException() : SignUpError()
 }

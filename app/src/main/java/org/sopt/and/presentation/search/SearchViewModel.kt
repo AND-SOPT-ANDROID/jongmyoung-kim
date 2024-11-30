@@ -1,19 +1,28 @@
 package org.sopt.and.presentation.search
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import org.sopt.and.domain.usecase.GetHobbyUseCase
+import org.sopt.and.presentation.search.sideeffect.SearchSideEffect
 import org.sopt.and.presentation.search.uistate.SearchUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-
+    private val getHobbyUseCase: GetHobbyUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<SearchUiState>
         field = MutableStateFlow(SearchUiState())
+
+    val sideEffect: SharedFlow<SearchSideEffect>
+        field = MutableSharedFlow<SearchSideEffect>()
 
     // dummy data for week2, later will be replaced by API
     val dummyPopularSeriesPosters: List<Pair<String, String>> = listOf(
@@ -122,5 +131,13 @@ class SearchViewModel @Inject constructor(
         uiState.value = uiState.value.copy(
             selectedTabIndex = index
         )
+    }
+
+    fun onHobbySearched(no: String) = viewModelScope.launch {
+        getHobbyUseCase(no).onSuccess {
+            sideEffect.emit(SearchSideEffect.ShowSnackbar(it.hobby))
+        }.onFailure {
+            sideEffect.emit(SearchSideEffect.Toast(it.message.orEmpty()))
+        }
     }
 }
