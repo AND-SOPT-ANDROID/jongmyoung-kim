@@ -1,6 +1,8 @@
 package org.sopt.and.presentation.main.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +54,11 @@ fun MainBottomBar(
     val currentTab = MainBottomTab.entries.find {
         currentDestination?.route == it.route::class.qualifiedName
     }
-    AnimatedVisibility(currentTab in MainBottomTab.entries) {
+    AnimatedVisibility(
+        visible = currentTab in MainBottomTab.entries,
+        enter = EnterTransition.None,
+        exit = ExitTransition.None
+    ) {
         Column {
             if (currentTab == MainBottomTab.HOME && isFirstSubscriber) { // only for user who's first subscriber
                 GuaranteeBanner(modifier = Modifier.height(48.dp))
