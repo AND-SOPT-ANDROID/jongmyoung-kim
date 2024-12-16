@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -32,10 +31,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
 import org.sopt.and.presentation.common.CustomTabRow
+import org.sopt.and.presentation.search.SearchContract.SearchSideEffect
 import org.sopt.and.presentation.search.components.SearchPopularItem
 import org.sopt.and.presentation.search.components.SearchTagButton
 import org.sopt.and.presentation.search.components.SearchTextField
-import org.sopt.and.presentation.search.sideeffect.SearchSideEffect
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.AndAndroidTheme
 
@@ -46,8 +45,8 @@ fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
-    val context = rememberUpdatedState(LocalContext.current).value
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -55,19 +54,26 @@ fun SearchScreen(
                 when (sideEffect) {
                     is SearchSideEffect.Toast ->
                         Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-                    is SearchSideEffect.ShowSnackbar -> onSearchHobby(context.getString(R.string.search_result, sideEffect.message))
+                    is SearchSideEffect.ShowSnackbar -> onSearchHobby(context.getString(
+                            R.string.search_result,
+                            sideEffect.message
+                        ))
                 }
             }
         }
+    }
+
+    LaunchedEffect(uiState.popularMoviePosters) {
+        if (uiState.popularMoviePosters.isEmpty()) viewModel.fetchSearchPosters()
     }
 
     SearchScreenContent(
         popularSeries = uiState.popularSeriesPosters,
         popularMovies = uiState.popularMoviePosters,
         text = uiState.searchInput,
-        onTextChange = viewModel::updateSearchInput,
-        onTabClick = viewModel::onTabClicked,
-        onSearchHobby = viewModel::onHobbySearched
+        onTextChange = { viewModel.setEvent(SearchContract.SearchEvent.OnSearchInputChanged(it)) },
+        onTabClick = { viewModel.setEvent(SearchContract.SearchEvent.OnTabClicked(it)) },
+        onSearchHobby = { viewModel.setEvent(SearchContract.SearchEvent.OnHobbySearched(it)) }
     )
 }
 
