@@ -37,16 +37,16 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
+import org.sopt.and.presentation.authentication.SignInContract.SignInEvent
+import org.sopt.and.presentation.authentication.SignInContract.SignInSideEffect
 import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.authentication.components.AuthTextField
 import org.sopt.and.presentation.authentication.components.SignInTopBar
 import org.sopt.and.presentation.authentication.components.SnsAccountTab
-import org.sopt.and.presentation.authentication.sideeffect.SignInSideEffect
 import org.sopt.and.presentation.common.CustomConfirmDialog
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.AndAndroidTheme
-
 
 @Composable
 fun SignInScreen(
@@ -73,22 +73,20 @@ fun SignInScreen(
         CustomConfirmDialog(
             title = R.string.wavve,
             description = R.string.sign_in_failed,
-            onDismissRequest = {
-                viewModel.updateDialogVisibility(false)
-            },
+            onDismissRequest = { viewModel.setEvent(SignInEvent.OnDialogVisibilityChanged(false)) },
             dismissText = R.string.confirm,
         )
     }
 
     SignInScreenContent(
         emailInput = uiState.emailInput,
-        onEmailChange = viewModel::updateEmailInput,
+        onEmailChange = { viewModel.setEvent(SignInEvent.OnEmailInputChanged(it)) },
         passwordInput = uiState.passwordInput,
-        onPasswordChange = viewModel::updatePasswordInput,
+        onPasswordChange = { viewModel.setEvent(SignInEvent.OnPasswordInputChanged(it)) },
         showEmailError = uiState.isEmailErrorShown,
         showPasswordError = uiState.isPasswordErrorShown,
-        onNavigateToSignUp = viewModel::onNavigateToSignUp,
-        onSignInClick = viewModel::onSignInClicked
+        onNavigateToSignUp = { viewModel.setEvent(SignInEvent.OnNavigateToSignUp) },
+        onSignInClick = { viewModel.setEvent(SignInEvent.OnSignInClicked) }
     )
 }
 

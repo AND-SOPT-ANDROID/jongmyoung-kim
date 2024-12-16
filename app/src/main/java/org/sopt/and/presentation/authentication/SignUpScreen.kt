@@ -39,11 +39,12 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
+import org.sopt.and.presentation.authentication.SignUpContract.SignUpEvent
+import org.sopt.and.presentation.authentication.SignUpContract.SignUpSideEffect
 import org.sopt.and.presentation.authentication.components.AlertText
 import org.sopt.and.presentation.authentication.components.AuthTextField
 import org.sopt.and.presentation.authentication.components.SignUpTopBar
 import org.sopt.and.presentation.authentication.components.SnsAccountTab
-import org.sopt.and.presentation.authentication.sideeffect.SignUpSideEffect
 import org.sopt.and.presentation.common.CustomActionDialog
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
@@ -61,7 +62,7 @@ fun SignUpScreen(
     val signUpMessage = stringResource(R.string.sign_up_success)
 
     BackHandler {
-        viewModel.updateDialogVisibility(true)
+        viewModel.setEvent(SignUpEvent.OnDialogVisibilityChanged(false))
     }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -83,23 +84,23 @@ fun SignUpScreen(
             description = R.string.sign_up_cancel_description,
             dismissText = R.string.dismiss,
             confirmText = R.string.confirm,
-            onDismissRequest = { viewModel.updateDialogVisibility(false) },
-            onConfirmRequest = viewModel::onNavigateToSignIn
+            onDismissRequest = { viewModel.setEvent(SignUpEvent.OnDialogVisibilityChanged(false)) },
+            onConfirmRequest = { viewModel.setEvent(SignUpEvent.OnCancelClicked) }
         )
     }
 
     SignUpScreenContent(
         emailInput = uiState.emailInput,
         isEmailValid = uiState.isEmailValid,
-        onEmailChange = viewModel::updateEmailInput,
+        onEmailChange = { viewModel.setEvent(SignUpEvent.OnEmailInputChanged(it)) },
         passwordInput = uiState.passwordInput,
         isPasswordValid = uiState.isPasswordValid,
-        onPasswordChange = viewModel::updatePasswordInput,
+        onPasswordChange = { viewModel.setEvent(SignUpEvent.OnPasswordInputChanged(it)) },
         hobbyInput = uiState.hobbyInput,
         isHobbyValid = uiState.isHobbyValid,
-        onHobbyChange = viewModel::updateHobbyInput,
-        onCancelClick = { viewModel.updateDialogVisibility(true) },
-        onSignUpClick = viewModel::onSignUpClicked,
+        onHobbyChange = { viewModel.setEvent(SignUpEvent.OnHobbyInputChanged(it)) },
+        onCancelClick = { viewModel.setEvent(SignUpEvent.OnDialogVisibilityChanged(true)) },
+        onSignUpClick = { viewModel.setEvent(SignUpEvent.OnSignUpClicked) },
         isButtonEnabled = uiState.isButtonEnabled
     )
 }
