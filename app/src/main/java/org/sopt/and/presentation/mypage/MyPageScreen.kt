@@ -35,11 +35,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import org.sopt.and.R
 import org.sopt.and.presentation.extension.noRippleClickable
+import org.sopt.and.presentation.mypage.MyPageContract.MyPageSideEffect
 import org.sopt.and.presentation.mypage.components.MyPageOverview
 import org.sopt.and.presentation.mypage.components.MyPageService
 import org.sopt.and.presentation.mypage.components.MyPageSettingBottomSheet
 import org.sopt.and.presentation.mypage.components.MyPageTicket
-import org.sopt.and.presentation.mypage.sideeffect.MyPageSideEffect
 import org.sopt.and.presentation.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.theme.AndAndroidTheme
 
@@ -66,21 +66,35 @@ fun MyPageScreen(
         }
     }
 
+    LaunchedEffect(uiState.userHobby) {
+        if (uiState.userHobby.isEmpty()) viewModel.fetchMyHobby()
+    }
+
     if (uiState.isBottomSheetVisible) {
         MyPageSettingBottomSheet(
-            onDismissRequest = { viewModel.updateBottomSheetVisibility(false) },
-            onButtonClicked = viewModel::modifyUserInformation,
+            onDismissRequest = { viewModel.setEvent(
+                MyPageContract.MyPageEvent.OnSettingClicked(
+                    isBottomSheetVisible = false,
+                    hobbyInput = "",
+                    passwordInput = ""
+                )
+            ) },
+            onButtonClicked = { viewModel.setEvent(MyPageContract.MyPageEvent.OnModifyButtonClicked) },
             hobbyInput = uiState.hobbyInput,
-            onHobbyInputChange = viewModel::updateHobbyInput,
+            onHobbyInputChange = { viewModel.setEvent(MyPageContract.MyPageEvent.OnHobbyInputChanged(it)) },
             passwordInput = uiState.passwordInput,
-            onPasswordInputChange = viewModel::updatePasswordInput
+            onPasswordInputChange = { viewModel.setEvent(MyPageContract.MyPageEvent.OnPasswordInputChanged(it)) }
         )
     }
 
     MyPageScreenContent(
         userHobby = uiState.userHobby,
-        onSignOutClicked = viewModel::onSignOutClicked,
-        onSettingClicked = { viewModel.updateBottomSheetVisibility(true) }
+        onSignOutClicked = { viewModel.setEvent(MyPageContract.MyPageEvent.OnSignOutClicked) },
+        onSettingClicked = { viewModel.setEvent(MyPageContract.MyPageEvent.OnSettingClicked(
+            isBottomSheetVisible = true,
+            hobbyInput = uiState.hobbyInput,
+            passwordInput = uiState.passwordInput
+        )) }
     )
 }
 
