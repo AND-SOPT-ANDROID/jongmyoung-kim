@@ -1,19 +1,31 @@
 package org.sopt.and.presentation.home
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import org.sopt.and.presentation.home.uistate.HomeUiState
+import kotlinx.coroutines.launch
+import org.sopt.and.presentation.home.HomeContract.HomeEvent
+import org.sopt.and.presentation.home.HomeContract.HomeSideEffect
+import org.sopt.and.presentation.home.HomeContract.HomeUiState
+import org.sopt.and.presentation.util.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 
-) : ViewModel() {
+) : BaseViewModel<HomeUiState, HomeSideEffect, HomeEvent>() {
+    override fun createInitialState(): HomeUiState = HomeUiState()
 
-    val uiState: StateFlow<HomeUiState>
-        field = MutableStateFlow(HomeUiState())
+    override suspend fun handleEvent(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.FetchMainBannersAndPosters -> setState {
+                copy(
+                    banners = dummyMainBanners,
+                    posters = dummyRecommendedPosters,
+                    rankedPosters = dummyRankedPoster
+                )
+            }
+        }
+    }
 
     // dummy data for week2, later will be replaced by API
     val dummyMainBanners: List<Pair<String, String>> = listOf(
@@ -38,7 +50,6 @@ class HomeViewModel @Inject constructor(
             "https://image.wavve.com/operation/image/banner/202410/1729140337731996324.png"
         )
     )
-
     val dummyRecommendedPosters: List<Pair<String, List<String>>> = listOf(
         Pair(
             "믿고 보는 웨이브 에디터 추천작",
@@ -69,7 +80,6 @@ class HomeViewModel @Inject constructor(
             )
         )
     )
-
     val dummyRankedPoster: Pair<String, List<String>> = Pair(
         "오늘의 영화 TOP 20",
         listOf(
@@ -90,11 +100,11 @@ class HomeViewModel @Inject constructor(
         getMainBannersAndPosters()
     }
 
-    private fun getMainBannersAndPosters() {
-        uiState.value = uiState.value.copy(
+    fun getMainBannersAndPosters() = viewModelScope.launch {
+        setEvent(HomeEvent.FetchMainBannersAndPosters(
             banners = dummyMainBanners,
             posters = dummyRecommendedPosters,
             rankedPosters = dummyRankedPoster
-        )
+        ))
     }
 }

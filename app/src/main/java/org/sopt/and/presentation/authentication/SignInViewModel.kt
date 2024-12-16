@@ -1,18 +1,15 @@
 package org.sopt.and.presentation.authentication
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.exception.SignInError
 import org.sopt.and.domain.usecase.SignInUseCase
-import org.sopt.and.presentation.authentication.sideeffect.SignInSideEffect
-import org.sopt.and.presentation.authentication.uistate.SignInUiState
+import org.sopt.and.presentation.authentication.SignInContract.SignInEvent
+import org.sopt.and.presentation.authentication.SignInContract.SignInSideEffect
+import org.sopt.and.presentation.authentication.SignInContract.SignInUiState
+import org.sopt.and.presentation.util.BaseViewModel
 import org.sopt.and.presentation.util.Constants.Companion.MAX_LENGTH
 import javax.inject.Inject
 
@@ -20,40 +17,30 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
-) : ViewModel() {
+) : BaseViewModel<SignInUiState, SignInSideEffect, SignInEvent>() {
+    override fun createInitialState(): SignInUiState = SignInUiState()
 
-    val uiState: StateFlow<SignInUiState>
-        field = MutableStateFlow(SignInUiState())
-
-    val sideEffect: SharedFlow<SignInSideEffect>
-        field = MutableSharedFlow<SignInSideEffect>()
-
-    fun updateEmailInput(emailInput: String) {
-        if (emailInput.length <= MAX_LENGTH) uiState.value = uiState.value.copy(
-            emailInput = emailInput
-        )
+    override suspend fun handleEvent(event: SignInEvent) {
+        when (event) {
+            is SignInEvent.OnEmailInputChanged -> {
+                if (event.emailInput.length <= MAX_LENGTH) setState { copy(emailInput = event.emailInput) }
+            }
+            is SignInEvent.OnPasswordInputChanged -> {
+                if (event.passwordInput.length <= MAX_LENGTH) setState { copy(passwordInput = event.passwordInput) }
+            }
+            is SignInEvent.OnDialogVisibilityChanged -> setState { copy(isDialogShown = event.isDialogShown) }
+            is SignInEvent.OnErrorTextVisibilityChanged -> setState {
+                copy(
+                    isEmailErrorShown = event.isEmailErrorShown,
+                    isPasswordErrorShown = event.isPasswordErrorShown
+                )
+            }
+            is SignInEvent.OnSignInClicked -> onSignInClicked()
+            SignInEvent.OnNavigateToSignUp -> onNavigateToSignUp()
+        }
     }
 
-    fun updatePasswordInput(passwordInput: String) {
-        if (passwordInput.length <= MAX_LENGTH) uiState.value = uiState.value.copy(
-            passwordInput = passwordInput
-        )
-    }
-
-    fun updateDialogVisibility(isDialogShown: Boolean) {
-        uiState.value = uiState.value.copy(
-            isDialogShown = isDialogShown
-        )
-    }
-
-    fun updateErrorTextVisibility(isEmailErrorShown: Boolean, isPasswordErrorShown: Boolean) {
-        uiState.value = uiState.value.copy(
-            isEmailErrorShown = isEmailErrorShown,
-            isPasswordErrorShown = isPasswordErrorShown
-        )
-    }
-
-    fun onSignInClicked() = viewModelScope.launch {
+    private fun onSignInClicked() = viewModelScope.launch {
         signInUseCase(
             user = with(uiState.value) {
                 User(
@@ -62,23 +49,22 @@ class SignInViewModel @Inject constructor(
                     hobby = ""
                 )
             }
-        ).onSuccess {
-            sideEffect.emit(SignInSideEffect.NavigateToHome)
+        ).onSuccess { setSideEffect(SignInSideEffect.NavigateToHome)
         }.onFailure {
             when (it) {
-                is SignInError.InvalidEmailException -> updateErrorTextVisibility(true, false)
-                is SignInError.InvalidPasswordException -> updateErrorTextVisibility(false, true)
+                is SignInError.InvalidEmailException ->
+                    setEvent(SignInEvent.OnErrorTextVisibilityChanged(true, false))
+                is SignInError.InvalidPasswordException ->
+                    setEvent(SignInEvent.OnErrorTextVisibilityChanged(false, true))
                 is SignInError.SignInFailedException -> {
-                    updateErrorTextVisibility(false, false)
-                    uiState.value = uiState.value.copy(
-                        isDialogShown = true
-                    )
+                    setEvent(SignInEvent.OnErrorTextVisibilityChanged(false, false))
+                    setEvent(SignInEvent.OnDialogVisibilityChanged(true))
                 }
             }
         }
     }
 
-    fun onNavigateToSignUp() = viewModelScope.launch {
-        sideEffect.emit(SignInSideEffect.NavigateToSignUp)
+    private fun onNavigateToSignUp() = viewModelScope.launch {
+        setSideEffect(SignInSideEffect.NavigateToSignUp)
     }
 }

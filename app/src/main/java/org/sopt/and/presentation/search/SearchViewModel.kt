@@ -1,28 +1,34 @@
 package org.sopt.and.presentation.search
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.usecase.GetHobbyUseCase
-import org.sopt.and.presentation.search.sideeffect.SearchSideEffect
-import org.sopt.and.presentation.search.uistate.SearchUiState
+import org.sopt.and.presentation.search.SearchContract.SearchEvent
+import org.sopt.and.presentation.search.SearchContract.SearchSideEffect
+import org.sopt.and.presentation.search.SearchContract.SearchUiState
+import org.sopt.and.presentation.util.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getHobbyUseCase: GetHobbyUseCase
-) : ViewModel() {
+) : BaseViewModel<SearchUiState, SearchSideEffect, SearchEvent>() {
+    override fun createInitialState(): SearchUiState = SearchUiState()
 
-    val uiState: StateFlow<SearchUiState>
-        field = MutableStateFlow(SearchUiState())
-
-    val sideEffect: SharedFlow<SearchSideEffect>
-        field = MutableSharedFlow<SearchSideEffect>()
+    override suspend fun handleEvent(event: SearchEvent) {
+        when (event) {
+            is SearchEvent.FetchSearchPosters -> setState {
+                copy(
+                    popularSeriesPosters = event.popularSeriesPosters,
+                    popularMoviePosters = event.popularMoviePosters
+                )
+            }
+            is SearchEvent.OnHobbySearched -> onHobbySearched(event.no)
+            is SearchEvent.OnTabClicked -> setState { copy(selectedTabIndex = event.index) }
+            is SearchEvent.OnSearchInputChanged -> setState { copy(searchInput = event.searchInput) }
+        }
+    }
 
     // dummy data for week2, later will be replaced by API
     val dummyPopularSeriesPosters: List<Pair<String, String>> = listOf(
@@ -110,34 +116,20 @@ class SearchViewModel @Inject constructor(
         ),
     )
 
-    init {
-        getSearchPosters()
-    }
-
-    fun getSearchPosters() {
-        uiState.value = uiState.value.copy(
-            popularSeriesPosters = dummyPopularSeriesPosters,
-            popularMoviePosters = dummyPopularMoviePosters
+    fun fetchSearchPosters() = viewModelScope.launch {
+        setEvent(
+            SearchEvent.FetchSearchPosters(
+                popularSeriesPosters = dummyPopularSeriesPosters,
+                popularMoviePosters = dummyPopularMoviePosters
+            )
         )
     }
 
-    fun updateSearchInput(searchInput: String) {
-        uiState.value = uiState.value.copy(
-            searchInput = searchInput
-        )
-    }
-
-    fun onTabClicked(index: Int) {
-        uiState.value = uiState.value.copy(
-            selectedTabIndex = index
-        )
-    }
-
-    fun onHobbySearched(no: String) = viewModelScope.launch {
+    private fun onHobbySearched(no: String) = viewModelScope.launch {
         getHobbyUseCase(no).onSuccess {
-            sideEffect.emit(SearchSideEffect.ShowSnackbar(it.hobby))
+            setSideEffect(SearchSideEffect.ShowSnackbar(it.hobby))
         }.onFailure {
-            sideEffect.emit(SearchSideEffect.Toast(it.message.orEmpty()))
+            setSideEffect(SearchSideEffect.Toast(it.message.orEmpty()))
         }
     }
 }
